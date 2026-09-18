@@ -1,0 +1,268 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  padding: var(--s-4) var(--gutter);
+  transition: padding var(--dur-ui) var(--ease-out);
+}
+
+.nav__inner {
+  max-width: var(--max-w);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-4);
+  border: 1px solid transparent;
+  transition:
+    background-color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out),
+    backdrop-filter var(--dur-ui) var(--ease-out);
+}
+
+/* The bar only acquires a surface once it is actually overlapping content. */
+.nav.is-condensed .nav__inner {
+  background: color-mix(in srgb, var(--ink-900) 72%, transparent);
+  border-color: var(--ink-600);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+.nav__mark {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.1em;
+  color: var(--bone-100);
+  white-space: nowrap;
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+.nav__mark-glyph {
+  color: var(--vermilion);
+  font-weight: 500;
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+.nav__mark-name {
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+  font-size: 0.875rem;
+  opacity: 0.62;
+  transition: opacity var(--dur-ui) var(--ease-out);
+}
+
+/* Once condensed, the full name gives way to the monogram — the page itself
+   has already said who this is. */
+.nav.is-condensed .nav__mark-name {
+  opacity: 0;
+  transform: translateX(-4px);
+}
+
+.nav__links {
+  margin-left: auto;
+}
+
+.nav__links ul {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.nav__link {
+  position: relative;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  color: color-mix(in srgb, var(--bone-100) 62%, transparent);
+  transition: color var(--dur-micro) linear;
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.1rem;
+  height: 1px;
+  background: var(--vermilion);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+
+.nav__link:hover {
+  color: var(--bone-100);
+}
+
+.nav__link:hover::after,
+.nav__link.is-active::after {
+  transform: scaleX(1);
+}
+
+.nav__link.is-active {
+  color: var(--bone-100);
+}
+
+.nav__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--ink-500);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  color: var(--bone-100);
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out),
+    color var(--dur-ui) var(--ease-out);
+}
+
+.nav__cta:hover {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+  color: #fff;
+}
+
+.nav__toggle {
+  display: none;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone-100);
+  padding: 0.5rem 0.25rem;
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+@media (max-width: 899px) {
+  .nav__links,
+  .nav__cta {
+    display: none;
+  }
+  .nav__toggle {
+    display: block;
+  }
+  .nav__mark-name {
+    display: none;
+  }
+}
+
+/* Coarse pointers get real targets, not 18px of monogram. */
+@media (pointer: coarse) {
+  .nav__mark,
+  .nav__toggle {
+    min-height: 44px;
+    align-items: center;
+  }
+  .nav__toggle {
+    display: flex;
+    padding-inline: var(--s-2);
+  }
+}
+
+/* ---- Overlay ---- */
+
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  background: var(--ink-900);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--nav-h) + var(--s-6)) var(--gutter) var(--s-8);
+  will-change: clip-path;
+}
+
+.nav-overlay__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-overlay__list button {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  width: 100%;
+  padding: var(--s-3) 0;
+  text-align: left;
+  border-bottom: 1px solid var(--ink-700);
+}
+
+.nav-overlay__index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--vermilion);
+  letter-spacing: 0.14em;
+}
+
+.nav-overlay__label {
+  font-size: clamp(2rem, 11vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.nav-overlay__foot {
+  margin-top: var(--s-8);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--graphite);
+}
+
+.nav-overlay__foot a {
+  border-bottom: 1px solid var(--ink-600);
+  padding-bottom: 2px;
+}
+
+
+/* ============================================================
+   Ground inversion for the fixed bar.
+   `data-ground-active` is published by useGroundTracker.
+   ============================================================ */
+
+[data-ground-active='bone'] .nav__mark,
+[data-ground-active='bone'] .nav__toggle,
+[data-ground-active='bone'] .nav__link.is-active,
+[data-ground-active='bone'] .nav__link:hover {
+  color: var(--ink-900);
+}
+
+[data-ground-active='bone'] .nav__link {
+  color: color-mix(in srgb, var(--ink-900) 58%, transparent);
+}
+
+[data-ground-active='bone'] .nav__mark-glyph {
+  color: var(--vermilion-dim);
+}
+
+[data-ground-active='bone'] .nav__link::after {
+  background: var(--vermilion-dim);
+}
+
+[data-ground-active='bone'] .nav__cta {
+  color: var(--ink-900);
+  border-color: var(--bone-300);
+}
+
+[data-ground-active='bone'] .nav__cta:hover {
+  background: var(--vermilion-dim);
+  border-color: var(--vermilion-dim);
+  color: #fff;
+}
+
+[data-ground-active='bone'] .nav.is-condensed .nav__inner {
+  background: color-mix(in srgb, var(--bone-100) 74%, transparent);
+  border-color: var(--bone-300);
+}

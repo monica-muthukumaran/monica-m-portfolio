@@ -1,0 +1,97 @@
+.arch {
+  margin: 0;
+  width: 100%;
+}
+
+.arch__svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.arch__band {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+
+.arch__band[data-visible='true'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arch__box rect {
+  fill: color-mix(in srgb, var(--bone-100) 3%, transparent);
+  stroke: var(--ink-500);
+  stroke-width: 1;
+  transition:
+    stroke 400ms var(--ease-out),
+    fill 400ms var(--ease-out);
+}
+
+.arch__box.is-accent rect {
+  stroke: var(--vermilion);
+  fill: color-mix(in srgb, var(--vermilion) 9%, transparent);
+}
+
+.arch__label {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  fill: var(--bone-100);
+}
+
+.arch__box.is-accent .arch__label {
+  fill: #fff;
+}
+
+.arch__sub {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  fill: var(--graphite);
+}
+
+.arch__box.is-accent .arch__sub {
+  fill: color-mix(in srgb, var(--vermilion) 62%, var(--bone-100));
+}
+
+.arch__tag {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  fill: var(--slate);
+}
+
+.arch__bus line {
+  stroke: var(--ink-500);
+  stroke-width: 1;
+}
+
+.arch__bus.is-accent line {
+  stroke: color-mix(in srgb, var(--vermilion) 68%, transparent);
+}
+
+/* Light ground (used if a diagram is ever placed on a bone section). */
+[data-ground='bone'] .arch__box rect {
+  fill: color-mix(in srgb, var(--ink-900) 2%, transparent);
+  stroke: var(--bone-300);
+}
+
+[data-ground='bone'] .arch__label {
+  fill: var(--ink-900);
+}
+
+[data-ground='bone'] .arch__bus line {
+  stroke: var(--bone-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arch__band {
+    transition-duration: 200ms;
+    transform: none;
+  }
+}

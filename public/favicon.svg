@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#08080A"/>
+  <!-- A node with two outgoing edges: the smallest possible drawing of the
+       thing the whole site is about. -->
+  <path d="M14 46V18l18 20 18-20v28" fill="none" stroke="#E2542C" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>

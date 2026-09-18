@@ -1,0 +1,138 @@
+.thinking__layout {
+  display: grid;
+  gap: var(--s-10);
+}
+
+@media (min-width: 900px) {
+  .thinking__layout {
+    grid-template-columns: minmax(0, 4.5fr) minmax(0, 7.5fr);
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: start;
+  }
+}
+
+/* ---- Aside ---- */
+
+.thinking__aside-inner {
+  position: sticky;
+  top: calc(var(--nav-h) + var(--s-6));
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+}
+
+.thinking__heading {
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+}
+
+.thinking__aside-note {
+  max-width: 32ch;
+}
+
+.thinking__counter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+}
+
+.thinking__counter-now {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+  font-family: var(--font-sans);
+}
+
+.thinking__counter-of {
+  color: var(--fg-faint);
+}
+
+/* ---- List ---- */
+
+.thinking__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.thinking__item {
+  padding-block: clamp(2.25rem, 5vw, 3.5rem);
+  border-bottom: 1px solid var(--rule);
+}
+
+.thinking__item:first-child {
+  padding-top: 0;
+}
+
+.thinking__item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.thinking__item-inner {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: var(--s-4);
+  align-items: start;
+}
+
+.thinking__n {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  padding-top: 0.45rem;
+}
+
+.thinking__title {
+  font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.thinking__body {
+  margin-top: var(--s-4);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--fg);
+  opacity: 0.8;
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+
+.thinking__evidence {
+  margin-top: var(--s-5);
+  padding-left: var(--s-5);
+  border-left: 1px solid var(--accent);
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--fg);
+  opacity: 0.74;
+  max-width: 54ch;
+}
+
+.thinking__evidence-tag {
+  display: block;
+  font-style: normal;
+  margin-bottom: 0.4rem;
+}
+
+@media (max-width: 899px) {
+  .thinking__aside-inner {
+    position: static;
+  }
+  .thinking__counter {
+    display: none;
+  }
+  .thinking__item-inner {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+}

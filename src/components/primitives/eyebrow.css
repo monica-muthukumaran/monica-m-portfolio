@@ -1,0 +1,28 @@
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  margin-bottom: var(--s-8);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.eyebrow__index {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.eyebrow__label {
+  color: var(--fg-faint);
+  white-space: nowrap;
+}
+
+.eyebrow__rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+  transform-origin: left center;
+  will-change: transform;
+}

@@ -1,0 +1,104 @@
+.has-custom-cursor,
+.has-custom-cursor a,
+.has-custom-cursor button,
+.has-custom-cursor [data-cursor] {
+  cursor: none;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 120;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+}
+
+.cursor-dot.is-visible,
+.cursor-ring.is-visible {
+  opacity: 1;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--vermilion);
+  transition: opacity var(--dur-ui) linear;
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid color-mix(in srgb, var(--bone-100) 45%, transparent);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition:
+    width var(--dur-ui) var(--ease-out),
+    height var(--dur-ui) var(--ease-out),
+    margin var(--dur-ui) var(--ease-out),
+    background-color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out),
+    opacity var(--dur-ui) linear;
+}
+
+.cursor-ring.is-active {
+  width: 58px;
+  height: 58px;
+  margin: -29px 0 0 -29px;
+  border-color: var(--vermilion);
+  background: color-mix(in srgb, var(--vermilion) 14%, transparent);
+}
+
+.cursor-ring.has-label {
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+}
+
+.cursor-ring__label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity var(--dur-micro) linear,
+    transform var(--dur-ui) var(--ease-out);
+  text-align: center;
+  line-height: 1.2;
+  max-width: 68px;
+}
+
+.cursor-ring.has-label .cursor-ring__label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Bone sections need the ring to be visible against a light ground. */
+[data-ground-active='bone'] .cursor-ring {
+  border-color: color-mix(in srgb, var(--ink-900) 38%, transparent);
+}
+
+[data-ground-active='bone'] .cursor-dot {
+  background: var(--vermilion-dim);
+}
+
+[data-ground-active='bone'] .cursor-ring.is-active {
+  border-color: var(--vermilion-dim);
+  background: color-mix(in srgb, var(--vermilion-dim) 12%, transparent);
+}
+
+[data-ground-active='bone'] .cursor-ring.has-label {
+  background: var(--vermilion-dim);
+  border-color: var(--vermilion-dim);
+}

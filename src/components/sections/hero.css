@@ -1,0 +1,242 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  background: var(--ink-900);
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* ---- Column rules ----
+   The grid the page is actually set on, shown once at the top and nowhere
+   else. Static, free, and it gives the ground structure without a particle
+   field pretending to be a system. */
+.hero__rules {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  /* Column flow, not a template: with a fixed column count the spare spans wrap
+     onto implicit rows and the rules stop partway down the hero. */
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  pointer-events: none;
+}
+
+.hero__rules span {
+  border-left: 1px solid var(--ink-600);
+}
+
+.hero__rules span:first-child {
+  border-left-color: var(--ink-500);
+}
+
+@media (max-width: 760px) {
+  .hero__rules span:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+/* One rule at the margin only. At phone widths the second one lands in the
+   middle of the surname. */
+@media (max-width: 540px) {
+  .hero__rules span:nth-child(n + 2) {
+    display: none;
+  }
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding-block: calc(var(--nav-h) + var(--s-5)) var(--s-7);
+  width: 100%;
+  min-height: 100svh;
+}
+
+/* ---- Meta ---- */
+
+.hero__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.hero__meta-role {
+  color: var(--bone-100);
+}
+
+.hero__meta-sep {
+  width: 14px;
+  height: 1px;
+  background: var(--ink-500);
+}
+
+.hero__time {
+  margin-left: auto;
+  color: var(--slate);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Body: name + statement, one block ----
+   The name used to float in the middle with 250px of nothing under it. The
+   statement now sits directly against it and carries the mid type size the
+   scale was missing, so the block reads as one idea instead of two orphans. */
+
+.hero__body {
+  margin-top: auto;
+  padding-top: var(--s-10);
+}
+
+.hero__name {
+  margin: 0;
+}
+
+.hero__name-lines {
+  display: block;
+  font-size: clamp(2.6rem, 11vw, 10.4rem);
+  font-weight: 600;
+  line-height: 0.86;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+  color: var(--bone-100);
+}
+
+.kinetic__line {
+  display: block;
+  white-space: nowrap;
+}
+
+.kinetic__ch {
+  display: inline-block;
+  will-change: transform;
+}
+
+.hero__lede {
+  margin-top: clamp(1.25rem, 2.6vw, 2.25rem);
+  max-width: 20ch;
+  font-size: clamp(1.375rem, 3.5vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--bone-100);
+  text-wrap: balance;
+}
+
+.hero__lede .em {
+  color: var(--vermilion);
+  letter-spacing: -0.015em;
+}
+
+/* ---- Foot ---- */
+
+.hero__foot {
+  margin-top: var(--s-10);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-6);
+}
+
+.hero__sub {
+  max-width: 46ch;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--bone-100) 58%, transparent);
+  text-wrap: pretty;
+}
+
+.hero__cue {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+.hero__cue:hover {
+  color: var(--bone-100);
+}
+
+.hero__cue-track {
+  position: relative;
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: var(--ink-500);
+  overflow: hidden;
+}
+
+.hero__cue-thumb {
+  position: absolute;
+  inset: 0;
+  background: var(--vermilion);
+  transform: translateX(-100%);
+  animation: cue-travel 2.4s var(--ease-inout) infinite;
+  animation-play-state: paused;
+}
+
+.hero.is-onscreen .hero__cue-thumb {
+  animation-play-state: running;
+}
+
+@keyframes cue-travel {
+  0% {
+    transform: translateX(-100%);
+  }
+  55%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (pointer: coarse) {
+  .hero__cue {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero__foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-5);
+  }
+  .hero__time {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* Free space split above and below rather than dumped on top: one `auto`
+     at each end centres the block on a tall phone screen instead of leaving a
+     third of the viewport empty above the name. */
+  .hero__body {
+    padding-top: var(--s-8);
+  }
+  .hero__foot {
+    margin-top: var(--s-8);
+    margin-bottom: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__cue-thumb {
+    animation: none;
+    transform: translateX(0);
+  }
+}

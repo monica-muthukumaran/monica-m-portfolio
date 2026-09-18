@@ -1,0 +1,251 @@
+.experience__head {
+  margin-bottom: var(--s-10);
+}
+
+.experience__heading {
+  max-width: 16ch;
+}
+
+.experience__track {
+  position: relative;
+  padding-left: 0;
+}
+
+/* The spine sits behind the dots and fills as the section is read. */
+.experience__spine {
+  position: absolute;
+  left: 0;
+  top: 0.75rem;
+  bottom: 0.75rem;
+  width: 1px;
+  background: var(--rule);
+  overflow: hidden;
+}
+
+.experience__spine-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--vermilion);
+  transform-origin: top center;
+  will-change: transform;
+}
+
+.experience__roles {
+  display: flex;
+  flex-direction: column;
+}
+
+.role {
+  padding-block: clamp(2rem, 3.6vw, 3rem);
+}
+
+.role:first-child {
+  padding-top: 0;
+}
+
+.role__inner {
+  position: relative;
+  display: grid;
+  gap: var(--s-5);
+  padding-left: var(--s-6);
+}
+
+@media (min-width: 900px) {
+  .role__inner {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    padding-left: var(--s-8);
+  }
+}
+
+.role__dot {
+  position: absolute;
+  left: -4.5px;
+  top: 0.6rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink-900);
+  border: 1px solid var(--ink-500);
+}
+
+.role__dot.is-current {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--vermilion) 16%, transparent);
+}
+
+/* ---- Meta column ---- */
+
+.role__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+.role__period {
+  color: var(--vermilion);
+  letter-spacing: 0.1em;
+}
+
+.role__company {
+  font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.role__location {
+  color: var(--slate);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.role__badge {
+  margin-top: var(--s-2);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--vermilion);
+  border: 1px solid color-mix(in srgb, var(--vermilion) 45%, transparent);
+  padding: 0.25rem 0.5rem;
+}
+
+/* ---- Body column ---- */
+
+.role__title {
+  color: var(--bone-100);
+}
+
+.role__summary {
+  margin-top: var(--s-3);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--bone-100) 76%, transparent);
+  max-width: 58ch;
+  text-wrap: pretty;
+}
+
+.role__responsibilities {
+  margin-top: var(--s-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  max-width: 62ch;
+}
+
+.role__responsibilities li {
+  position: relative;
+  padding-left: var(--s-5);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--bone-100) 66%, transparent);
+  text-wrap: pretty;
+}
+
+.role__responsibilities li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 11px;
+  height: 1px;
+  background: var(--ink-500);
+}
+
+.role__systems {
+  margin-top: var(--s-5);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+}
+
+.role__systems ul {
+  margin-top: var(--s-4);
+  display: grid;
+  gap: var(--s-3);
+}
+
+@media (min-width: 640px) {
+  .role__systems ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-4) var(--s-5);
+  }
+}
+
+.role__systems li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.role__systems strong {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--bone-100);
+}
+
+.role__systems span {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--slate);
+  line-height: 1.45;
+}
+
+.role__stack {
+  margin-top: var(--s-5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+  line-height: 1.9;
+}
+
+.role__stack li:not(:last-child)::after {
+  content: '/';
+  margin-left: 0.5rem;
+  color: var(--ink-500);
+}
+
+.role--education .role__company {
+  font-size: clamp(1.25rem, 2vw, 1.625rem);
+}
+
+/* ---- Foot ---- */
+
+.experience__foot {
+  margin-top: var(--s-8);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: var(--s-6);
+}
+
+@media (min-width: 640px) {
+  .experience__foot {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-8);
+  }
+}
+
+.experience__foot ul {
+  margin-top: var(--s-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.experience__foot li {
+  font-size: 0.9375rem;
+  color: color-mix(in srgb, var(--bone-100) 70%, transparent);
+}

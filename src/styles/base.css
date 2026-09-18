@@ -1,0 +1,278 @@
+/* ============================================================
+   Base layer — element defaults and the small set of shared
+   structural classes. Component styling lives with components.
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto; /* smooth scrolling is handled in JS so it can be cancelled */
+}
+
+html.lenis-active {
+  height: auto;
+}
+
+body {
+  margin: 0;
+  background: var(--ink-900);
+  color: var(--bone-100);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* No overflow property on <html>/<body>: setting one axis to clip/hidden makes
+   the other compute to auto, which turns the body into a scroll container and
+   silently breaks every viewport-relative `position: sticky` below it — which
+   is the entire Work section. Horizontal overflow is prevented per-element
+   instead (see the `overflow-x: auto` wrappers on wide diagrams). */
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--vermilion);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--vermilion);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ============================================================
+   Structure
+   ============================================================ */
+
+.section {
+  position: relative;
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: var(--pad-section);
+  /* The ground inversion needs an isolation context so the grain
+     and any absolutely-placed scene layers stay inside the section. */
+  isolation: isolate;
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.measure {
+  max-width: var(--measure);
+}
+
+/* Asymmetric editorial split — 7/5, not a centred column. */
+.split {
+  display: grid;
+  gap: var(--s-8);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .split {
+    grid-template-columns: 7fr 5fr;
+    gap: var(--s-12);
+  }
+  .split--reverse {
+    grid-template-columns: 5fr 7fr;
+  }
+}
+
+.rule {
+  height: 1px;
+  border: 0;
+  background: var(--rule);
+  width: 100%;
+}
+
+/* ============================================================
+   Type
+   ============================================================ */
+
+.t-mega,
+.t-display,
+.t-h2 {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.t-mega {
+  font-size: var(--fs-mega);
+  letter-spacing: -0.05em;
+}
+
+.t-display {
+  font-size: var(--fs-display);
+}
+
+.t-h2 {
+  font-size: var(--fs-h2);
+}
+
+.t-h3 {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.t-lead {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--fg);
+  opacity: 0.86;
+}
+
+.t-body {
+  font-size: var(--fs-body);
+  color: var(--fg);
+  opacity: 0.78;
+}
+
+.t-mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.08em;
+  color: var(--fg-faint);
+}
+
+.t-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+/* The one editorial flourish: the clause a sentence turns on. */
+.em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Motion primitives
+   ============================================================ */
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.06em; /* descenders must not be clipped by the mask */
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--s-4);
+  left: var(--s-4);
+  z-index: 200;
+  transform: translateY(-200%);
+  background: var(--vermilion);
+  color: #fff;
+  padding: var(--s-3) var(--s-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ============================================================
+   Reduced motion — structural, not decorative.
+   JS also branches on this; the CSS here is the safety net.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

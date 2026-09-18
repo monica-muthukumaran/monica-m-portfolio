@@ -1,0 +1,117 @@
+/* ============================================================
+   Design tokens. The single source of truth for the system.
+   See DESIGN_SYSTEM.md — no component may invent a value.
+   ============================================================ */
+
+:root {
+  /* ---- Ground: ink ---- */
+  --ink-900: #08080a;
+  --ink-800: #0e0e11;
+  --ink-700: #16161a;
+  --ink-600: #212127;
+  --ink-500: #2e2e36;
+
+  /* ---- Ground: bone ---- */
+  --bone-100: #f4f2ed;
+  --bone-200: #e8e4dc;
+  --bone-300: #d6d1c6;
+  --bone-400: #b9b3a6;
+
+  /* ---- Neutrals ---- */
+  --graphite: #8a8a94;
+  --slate: #5c5c66;
+
+  /* ---- Accent ---- */
+  --vermilion: #e2542c;
+  --vermilion-dim: #a83d1e;
+  --amber: #e3a24a;
+
+  /* ---- Semantic (re-pointed by [data-ground]) ---- */
+  --bg: var(--ink-900);
+  --bg-raised: var(--ink-800);
+  --panel: var(--ink-700);
+  --rule: var(--ink-600);
+  --fg: var(--bone-100);
+  --fg-muted: var(--graphite);
+  --fg-faint: var(--slate);
+  --accent: var(--vermilion);
+
+  /* ---- Type families ---- */
+  --font-sans: 'Instrument Sans', 'Instrument Sans Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+
+  /* ---- Type scale ---- */
+  --fs-mega: clamp(3.5rem, 14vw, 13rem);
+  --fs-display: clamp(2.5rem, 7.5vw, 6.5rem);
+  --fs-h2: clamp(2rem, 4.5vw, 3.75rem);
+  --fs-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --fs-lead: clamp(1.0625rem, 1.35vw, 1.375rem);
+  --fs-body: 1.0625rem;
+  --fs-meta: 0.8125rem;
+  --fs-micro: 0.6875rem;
+
+  /* ---- Space ---- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 2.5rem;
+  --s-8: 3rem;
+  --s-10: 4rem;
+  --s-12: 6rem;
+  --s-14: 8rem;
+  --s-16: 10rem;
+
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  /* 109px top + 109px bottom put ~220px of nothing at every seam, which
+     reads as unfinished rather than generous once there are eight sections. */
+  --pad-section: clamp(4rem, 8.5vh, 7rem);
+  --max-w: 1440px;
+  --measure: 62ch;
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-snap: cubic-bezier(0.34, 1.32, 0.64, 1);
+  --dur-micro: 180ms;
+  --dur-ui: 320ms;
+  --dur-reveal: 800ms;
+  --dur-scene: 1200ms;
+
+  --nav-h: 4.5rem;
+}
+
+/* Bone sections re-point the semantic layer. Components never branch on it. */
+[data-ground='bone'] {
+  --bg: var(--bone-100);
+  --bg-raised: var(--bone-200);
+  --panel: var(--bone-200);
+  --rule: var(--bone-300);
+  --fg: var(--ink-900);
+  --fg-muted: #5f5c55;
+  --fg-faint: #837e74;
+  --accent: var(--vermilion-dim);
+  color-scheme: light;
+}
+
+/* ---- Fallback metrics: keeps the mega type from shifting on swap ---- */
+@font-face {
+  font-family: 'Instrument Sans Fallback';
+  src: local('Arial');
+  size-adjust: 97%;
+  ascent-override: 95%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Instrument Serif Fallback';
+  src: local('Times New Roman');
+  size-adjust: 106%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}

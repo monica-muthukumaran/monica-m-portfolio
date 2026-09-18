@@ -1,0 +1,100 @@
+.statement__line {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.28em;
+  row-gap: 0.04em;
+  max-width: 17ch;
+  font-size: var(--fs-display);
+  font-weight: 600;
+  letter-spacing: -0.042em;
+  line-height: 1;
+}
+
+.statement__word {
+  display: inline-block;
+  will-change: opacity;
+}
+
+.statement__word.em {
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  padding-right: 0.06em;
+}
+
+/* ---- Lead ----
+   The size step the section was missing: display type, then this, then body.
+   It carries the first paragraph on its own so the remaining prose can be set
+   smaller without the whole block flattening out. */
+
+.statement__lead {
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
+  max-width: 30ch;
+  font-size: clamp(1.25rem, 2.3vw, 1.875rem);
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  text-wrap: pretty;
+}
+
+/* ---- Remainder, set in two columns ---- */
+
+.statement__rest {
+  margin-top: var(--s-8);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: var(--s-5);
+}
+
+@media (min-width: 820px) {
+  .statement__rest {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 4.5rem);
+  }
+}
+
+.statement__para {
+  font-size: 0.9375rem;
+  line-height: 1.68;
+  color: var(--fg);
+  opacity: 0.74;
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+/* ---- One line, not a four-row table ----
+   The old aside was a label/value list with hairlines — the same shape as
+   three other sections, and every fact in it appeared somewhere else too. */
+
+.statement__now {
+  margin-top: var(--s-8);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  color: var(--fg-muted);
+  max-width: 68ch;
+}
+
+.statement__now strong {
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.statement__now-label {
+  display: inline-block;
+  margin-right: 0.75rem;
+  font-size: var(--fs-micro);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+@media (max-width: 820px) {
+  .statement__line {
+    max-width: none;
+  }
+}

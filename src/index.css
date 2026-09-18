@@ -1,0 +1,29 @@
+@import 'tailwindcss';
+@import './styles/tokens.css';
+@import './styles/base.css';
+
+/* Tailwind is used for layout and spacing utilities only. Every colour and
+   type utility resolves back to the tokens above, so there is exactly one
+   place a value can be changed. */
+@theme inline {
+  --color-ink-900: var(--ink-900);
+  --color-ink-800: var(--ink-800);
+  --color-ink-700: var(--ink-700);
+  --color-ink-600: var(--ink-600);
+  --color-bone-100: var(--bone-100);
+  --color-bone-200: var(--bone-200);
+  --color-bone-300: var(--bone-300);
+  --color-graphite: var(--graphite);
+  --color-slate: var(--slate);
+  --color-vermilion: var(--vermilion);
+  --color-amber: var(--amber);
+
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+
+  --font-display: var(--font-sans);
+  --font-editorial: var(--font-serif);
+  --font-code: var(--font-mono);
+}

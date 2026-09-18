@@ -1,0 +1,248 @@
+.engineering__head {
+  display: grid;
+  gap: var(--s-5);
+  margin-bottom: var(--s-10);
+}
+
+@media (min-width: 900px) {
+  .engineering__head {
+    grid-template-columns: 6fr 5fr;
+    gap: var(--s-12);
+    align-items: end;
+  }
+}
+
+.engineering__heading {
+  max-width: 14ch;
+}
+
+.engineering__body {
+  display: grid;
+  gap: var(--s-8);
+}
+
+@media (min-width: 1000px) {
+  .engineering__body {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: stretch;
+  }
+}
+
+/* No border, no fill. Two stacked bordered boxes read as cards, and the whole
+   site is meant to be hairlines and ground rather than panels. */
+.engineering__graph-wrap {
+  min-width: 0;
+}
+
+.engineering__graph {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* ---- Edges ---- */
+
+.engineering__edges line {
+  stroke: var(--ink-500);
+  stroke-width: 1;
+  stroke-dasharray: 3 7;
+  transition:
+    stroke 260ms var(--ease-out),
+    stroke-width 260ms var(--ease-out);
+  animation: edge-flow 11s linear infinite;
+  animation-play-state: paused;
+}
+
+.engineering__graph-inner.is-onscreen .engineering__edges line {
+  animation-play-state: running;
+}
+
+.engineering__graph.is-still .engineering__edges line {
+  animation: none;
+}
+
+.engineering__edges line.is-live {
+  stroke: var(--vermilion);
+  stroke-width: 1.4;
+  stroke-dasharray: 4 6;
+  animation-duration: 4s;
+}
+
+@keyframes edge-flow {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+/* ---- Nodes ---- */
+
+.engineering__node {
+  cursor: pointer;
+  transition: opacity 260ms var(--ease-out);
+}
+
+.engineering__node.is-dim {
+  opacity: 0.34;
+}
+
+.engineering__hit {
+  fill: transparent;
+}
+
+/* A square mark and a label, the same vocabulary as the project architecture
+   diagrams — so the two system drawings on the site read as one language
+   instead of two unrelated charts. */
+.engineering__mark {
+  fill: var(--ink-600);
+  stroke: var(--ink-500);
+  stroke-width: 1;
+  transition:
+    fill 260ms var(--ease-out),
+    stroke 260ms var(--ease-out);
+}
+
+.engineering__node.is-active .engineering__mark {
+  fill: var(--vermilion);
+  stroke: var(--vermilion);
+}
+
+.engineering__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--graphite);
+  transition: fill 260ms var(--ease-out);
+  pointer-events: none;
+}
+
+.engineering__node.is-active .engineering__label {
+  fill: var(--bone-100);
+}
+
+.engineering__node:focus-visible .engineering__mark {
+  fill: var(--vermilion);
+  stroke: var(--bone-100);
+  stroke-width: 2;
+}
+
+.engineering__node:focus-visible {
+  outline: none;
+}
+
+/* ---- Panel ---- */
+
+.engineering__panel {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--rule);
+  min-height: 20rem;
+}
+
+@media (min-width: 1000px) {
+  .engineering__panel {
+    padding-top: 0;
+    padding-left: clamp(2rem, 3vw, 3rem);
+    border-top: 0;
+    border-left: 1px solid var(--rule);
+  }
+}
+
+.engineering__panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s-5);
+}
+
+.engineering__panel-title {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.engineering__built {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.engineering__built li {
+  position: relative;
+  padding-left: var(--s-5);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--bone-100) 72%, transparent);
+  text-wrap: pretty;
+}
+
+.engineering__built li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 12px;
+  height: 1px;
+  background: var(--vermilion);
+  opacity: 0.75;
+}
+
+.engineering__hint {
+  margin-top: auto;
+  padding-top: var(--s-6);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/* ---- Narrow: an index, not a scrolling diagram ----
+   Squeezed into a phone the graph became a horizontally scrolling box with the
+   right-hand labels sliced in half. The interaction that matters — pick a
+   technology, read what was built with it — survives without the drawing. */
+
+.engineering__index {
+  display: none;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0;
+}
+
+.engineering__index button {
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  min-height: 44px;
+  transition: color var(--dur-micro) linear;
+}
+
+.engineering__index li:not(:last-child) button::after {
+  content: '/';
+  margin-left: 0.75rem;
+  color: var(--ink-500);
+}
+
+.engineering__index button.is-active {
+  color: var(--vermilion);
+}
+
+@media (max-width: 999px) {
+  .engineering__graph-inner {
+    display: none;
+  }
+  .engineering__index {
+    display: flex;
+  }
+  .engineering__panel {
+    min-height: 0;
+  }
+}
