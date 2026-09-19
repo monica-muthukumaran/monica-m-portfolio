@@ -249,3 +249,70 @@
   font-size: 0.9375rem;
   color: color-mix(in srgb, var(--bone-100) 70%, transparent);
 }
+
+/* ============================================================
+   Certifications — a list where one entry has something to say.
+   The detailed one is the Coding Shuttle cohort; it used to be a
+   section of its own, which oversold it.
+   ============================================================ */
+
+.experience__certs ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.cert-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.cert-item__title {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--fg);
+}
+
+.cert-item__year {
+  color: var(--fg-faint);
+  font-weight: 400;
+}
+
+.cert-item__issuer {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.cert-item__issuer a {
+  border-bottom: 1px solid transparent;
+  transition:
+    color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out);
+}
+
+.cert-item__issuer a:hover {
+  color: var(--fg);
+  border-bottom-color: var(--accent);
+}
+
+/* The one entry that earns a paragraph gets a rule to mark it out, rather
+   than a card — a card here would be a second certificate section. */
+.cert-item.is-detailed {
+  padding-left: var(--s-4);
+  border-left: 1px solid var(--accent);
+}
+
+.cert-item__detail {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.62;
+  color: var(--fg);
+  opacity: 0.72;
+  max-width: 56ch;
+  text-wrap: pretty;
+}

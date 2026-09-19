@@ -98,11 +98,32 @@ export const education = {
   detail: 'CGPA 8.5',
 }
 
-export const certifications: readonly string[] = [
-  'Palantir Foundry — Software Development Essentials',
-  'MongoDB SI Associate',
-  'Infosys Certified Front-End Web Developer',
-  'FastAPI — Udemy',
+export type Certification = {
+  title: string
+  issuer: string
+  /**
+   * Optional. Only where there is something worth saying beyond the title —
+   * what the course actually covered, or what came out of it. A certificate
+   * with nothing to explain is better left as one line.
+   */
+  detail?: string
+  year?: string
+  href?: string
+}
+
+export const certifications: readonly Certification[] = [
+  {
+    title: 'Spring Boot 0 to 100 — Cohort 5.0',
+    issuer: 'Coding Shuttle',
+    year: '2026',
+    href: 'https://codingshuttle.com',
+    detail:
+      'A project-based course in Spring Boot and distributed systems — REST and Spring Data JPA through to microservices, Kafka, Redis, Neo4j, Resilience4j, Docker and Kubernetes. Two systems came out of it: the distributed payment gateway and the social platform above, which are the part I would rather be judged on.',
+  },
+  { title: 'Software Development Essentials', issuer: 'Palantir Foundry' },
+  { title: 'SI Associate', issuer: 'MongoDB' },
+  { title: 'Certified Front-End Web Developer', issuer: 'Infosys' },
+  { title: 'FastAPI', issuer: 'Udemy' },
 ]
 
 export const recognition: readonly string[] = [

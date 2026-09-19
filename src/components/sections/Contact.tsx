@@ -44,7 +44,7 @@ export function Contact() {
   return (
     <section className="section contact" id="contact" aria-labelledby="contact-heading">
       <div className="shell">
-        <Eyebrow index="08">Contact</Eyebrow>
+        <Eyebrow index="07">Contact</Eyebrow>
 
         <div className="contact__statement">
           <span className="contact__kicker t-label">{profile.closing.kicker}</span>

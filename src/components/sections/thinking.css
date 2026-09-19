@@ -21,34 +21,78 @@
   gap: var(--s-5);
 }
 
-.thinking__heading {
-  letter-spacing: -0.04em;
-  line-height: 0.96;
+/* The aside is a statement and a counter now, with no display heading over
+   them — so the statement is set a step up from body copy and carries it. */
+.thinking__aside-note {
+  max-width: 30ch;
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.32;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  text-wrap: pretty;
 }
 
-.thinking__aside-note {
-  max-width: 32ch;
-}
+/* ---- Counter ----
+   An odometer and a meter. Both are driven by the scroll rather than by a
+   state change, which is the difference between a progress indicator and a
+   number that happens to update. */
 
 .thinking__counter {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
   margin-top: var(--s-4);
-  padding-top: var(--s-4);
+  padding-top: var(--s-5);
   border-top: 1px solid var(--rule);
 }
 
-.thinking__counter-now {
+.thinking__counter-read {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+}
+
+/* One digit tall, with the reel of all six sliding behind it. */
+.thinking__counter-window {
+  display: block;
+  height: 1.9rem;
+  overflow: hidden;
+}
+
+.thinking__counter-reel {
+  display: block;
+  will-change: transform;
+}
+
+.thinking__counter-digit {
+  display: block;
+  height: 1.9rem;
+  font-family: var(--font-sans);
   font-size: 1.75rem;
   font-weight: 600;
   letter-spacing: -0.03em;
+  line-height: 1.9rem;
   color: var(--accent);
-  font-family: var(--font-sans);
 }
 
 .thinking__counter-of {
   color: var(--fg-faint);
+}
+
+.thinking__meter {
+  display: block;
+  height: 2px;
+  margin-top: var(--s-4);
+  background: var(--rule);
+  overflow: hidden;
+}
+
+.thinking__meter-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left center;
+  will-change: transform;
 }
 
 /* ---- List ---- */
@@ -60,7 +104,6 @@
 
 .thinking__item {
   padding-block: clamp(2.25rem, 5vw, 3.5rem);
-  border-bottom: 1px solid var(--rule);
 }
 
 .thinking__item:first-child {
@@ -68,15 +111,44 @@
 }
 
 .thinking__item:last-child {
-  border-bottom: 0;
   padding-bottom: 0;
 }
 
+/* The focus falloff. Everything stays readable — this is a depth cue, not a
+   reveal, so nothing drops below 0.55 and no text ever moves. */
 .thinking__item-inner {
   display: grid;
-  grid-template-columns: 3.25rem minmax(0, 1fr);
+  grid-template-columns: 1px 2.75rem minmax(0, 1fr);
   gap: var(--s-4);
   align-items: start;
+  opacity: 0.55;
+  transition: opacity 620ms var(--ease-out);
+}
+
+.thinking__item.is-focused .thinking__item-inner,
+.thinking__item.is-still .thinking__item-inner {
+  opacity: 1;
+}
+
+/* ---- The rail ----
+   Replaces the old bottom border. A rule that draws itself down the gutter as
+   each principle is read, so the six of them join into one continuous line. */
+
+.thinking__rail {
+  position: relative;
+  align-self: stretch;
+  width: 1px;
+  min-height: 100%;
+  background: var(--rule);
+}
+
+.thinking__rail-fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: var(--accent);
+  transform-origin: top center;
+  will-change: transform;
 }
 
 .thinking__n {
@@ -85,6 +157,7 @@
   letter-spacing: 0.1em;
   color: var(--accent);
   padding-top: 0.45rem;
+  will-change: opacity;
 }
 
 .thinking__title {
@@ -118,12 +191,6 @@
   max-width: 54ch;
 }
 
-.thinking__evidence-tag {
-  display: block;
-  font-style: normal;
-  margin-bottom: 0.4rem;
-}
-
 @media (max-width: 899px) {
   .thinking__aside-inner {
     position: static;
@@ -132,7 +199,16 @@
     display: none;
   }
   .thinking__item-inner {
-    grid-template-columns: 2.25rem minmax(0, 1fr);
+    grid-template-columns: 1px 1.75rem minmax(0, 1fr);
     gap: var(--s-3);
+  }
+}
+
+/* Reduced motion keeps the rail and the meter — they are structure — and
+   drops only the falloff, which is the part that is decoration. */
+@media (prefers-reduced-motion: reduce) {
+  .thinking__item-inner {
+    opacity: 1;
+    transition: none;
   }
 }

@@ -1,0 +1,272 @@
+/* ============================================================
+   Work index — four rows on the homepage, with the hovered
+   system drawn beside them.
+   ============================================================ */
+
+.workindex__head {
+  display: grid;
+  gap: var(--s-5);
+  margin-top: var(--s-4);
+}
+
+@media (min-width: 900px) {
+  .workindex__head {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: end;
+  }
+}
+
+.workindex__heading {
+  max-width: 16ch;
+}
+
+.workindex__intro {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--bone-100) 76%, transparent);
+  max-width: 42ch;
+  text-wrap: pretty;
+}
+
+.workindex__body {
+  display: grid;
+  gap: var(--s-8);
+  margin-top: clamp(2.5rem, 7vh, 4.5rem);
+}
+
+@media (min-width: 1040px) {
+  .workindex__body {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+}
+
+/* ---- The rows ---- */
+
+.workindex__list {
+  border-top: 1px solid var(--rule);
+}
+
+.entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: var(--s-3) var(--s-5);
+  padding: var(--s-5) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* The hover wash bleeds past the text column so the row reads as a target,
+   not as a paragraph that happens to be clickable. */
+.entry::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(-1 * var(--s-4));
+  background: color-mix(in srgb, var(--vermilion) 7%, transparent);
+  opacity: 0;
+  transition: opacity var(--dur-ui) var(--ease-out);
+  pointer-events: none;
+}
+
+.entry:hover::before,
+.entry:focus-visible::before {
+  opacity: 1;
+}
+
+.entry__index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.16em;
+  color: var(--vermilion);
+  padding-top: 0.55em;
+}
+
+.entry__main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.entry__name {
+  font-size: clamp(1.375rem, 2.6vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--bone-100);
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+.entry:hover .entry__name {
+  color: var(--vermilion);
+}
+
+.entry__concept {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--bone-100) 66%, transparent);
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+
+.entry__tech {
+  margin-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.entry__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  padding-top: 0.4em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.entry__kind {
+  color: var(--graphite);
+}
+
+.entry__year {
+  color: var(--slate);
+}
+
+.entry__go {
+  grid-column: 3;
+  grid-row: 1;
+  display: none;
+  color: var(--vermilion);
+  transform: translate(-6px, 6px);
+  opacity: 0;
+  transition:
+    opacity var(--dur-ui) var(--ease-out),
+    transform var(--dur-ui) var(--ease-out);
+}
+
+@media (pointer: fine) {
+  .entry {
+    grid-template-columns: auto 1fr auto auto;
+  }
+  .entry__go {
+    display: block;
+    grid-column: 4;
+    align-self: center;
+  }
+  .entry:hover .entry__go,
+  .entry:focus-visible .entry__go {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@media (max-width: 620px) {
+  .entry {
+    grid-template-columns: auto 1fr;
+  }
+  .entry__meta {
+    grid-column: 2;
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: row;
+    gap: var(--s-3);
+    padding-top: 0;
+  }
+}
+
+/* ---- The preview panel ---- */
+
+.workindex__preview {
+  position: sticky;
+  top: calc(var(--nav-h) + var(--s-5));
+}
+
+@media (max-width: 1039px) {
+  .workindex__preview {
+    display: none;
+  }
+}
+
+.workindex__preview-frame {
+  position: relative;
+  padding: var(--s-6) var(--s-5) var(--s-5);
+  border: 1px solid var(--rule);
+  background:
+    radial-gradient(120% 120% at 80% 0%, color-mix(in srgb, var(--vermilion) 5%, transparent) 0%, transparent 55%),
+    var(--ink-800);
+}
+
+.workindex__preview-tag {
+  position: absolute;
+  top: calc(-1 * var(--s-3));
+  left: var(--s-5);
+  padding-inline: var(--s-3);
+  background: var(--ink-900);
+  color: var(--slate);
+}
+
+.workindex__preview-hint {
+  margin-top: var(--s-4);
+  text-align: right;
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+/* ---- Recognition on the card ----
+   One badge on the whole index. It gets a fill and a border because it is a
+   credential; nothing else in this list is allowed either. */
+
+.entry__award {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.55rem;
+  align-self: flex-start;
+  margin-top: 0.15rem;
+  padding: 0.3rem 0.6rem 0.3rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--vermilion) 40%, transparent);
+  background: color-mix(in srgb, var(--vermilion) 9%, transparent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  transition:
+    border-color var(--dur-ui) var(--ease-out),
+    background-color var(--dur-ui) var(--ease-out);
+}
+
+.entry:hover .entry__award {
+  border-color: var(--vermilion);
+  background: color-mix(in srgb, var(--vermilion) 14%, transparent);
+}
+
+.entry__award-mark {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: var(--vermilion);
+  transform: rotate(45deg);
+}
+
+.entry__award-title {
+  color: var(--bone-100);
+}
+
+.entry__award-placement {
+  padding-left: 0.5rem;
+  border-left: 1px solid color-mix(in srgb, var(--vermilion) 34%, transparent);
+  color: var(--vermilion);
+}

@@ -515,24 +515,3 @@ export const socialServices: readonly ServiceNode[] = [
     tier: 3,
   },
 ]
-
-/* ============================================================
-   The two of them, side by side
-   ============================================================ */
-
-export const comparison = {
-  heading: ['Two systems.', 'Two kinds of complexity.'],
-  left: {
-    key: 'Payments',
-    challenge: ['consistency', 'reliability', 'failure recovery'],
-    line: 'One event that must happen exactly once, in a world where nothing happens exactly once.',
-  },
-  right: {
-    key: 'Social graph',
-    challenge: ['relationships', 'events', 'high-volume reads', 'distributed communication'],
-    line: 'Millions of events that may each be slightly late — as long as the read is fast and the graph is right.',
-  },
-  merge: 'Distributed systems',
-  closing:
-    'The techniques overlap almost completely: a broker, a cache, a bounded retry, an event nobody waits on. What differs is what you are allowed to get wrong. In payments the answer is nothing; in a feed it is a few seconds of staleness. Knowing which of those you are in is most of the design.',
-} as const

@@ -1,148 +1,88 @@
+/* ============================================================
+   Fundamentals — a strip under the stack graph.
+   Two rows of names and one sentence. It used to be twelve cards.
+   ============================================================ */
+
 .fundamentals {
-  margin-top: var(--s-12);
-  padding-top: var(--s-8);
+  margin-top: clamp(3rem, 8vh, 5rem);
+  padding-top: var(--s-5);
   border-top: 1px solid var(--rule);
 }
 
-.fundamentals__head {
-  display: grid;
-  gap: var(--s-5);
-  margin-bottom: var(--s-8);
-}
-
-@media (min-width: 900px) {
-  .fundamentals__head {
-    grid-template-columns: 7fr 5fr;
-    gap: var(--s-12);
-    align-items: end;
-  }
-}
-
-.fundamentals__eyebrow {
-  color: var(--accent);
-  grid-column: 1 / -1;
-}
-
 .fundamentals__heading {
-  font-size: var(--fs-h2);
-  font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 0.98;
-  max-width: 20ch;
+  display: block;
+  color: var(--vermilion);
+  letter-spacing: 0.24em;
 }
 
-.fundamentals__note {
-  max-width: 44ch;
-}
-
-/* ---- Two columns ---- */
-
-.fundamentals__grid {
-  display: grid;
-  gap: var(--s-10);
-}
-
-@media (min-width: 900px) {
-  .fundamentals__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(2.5rem, 5vw, 5rem);
-  }
-}
-
-.fundamentals__column-title {
-  padding-bottom: var(--s-3);
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: var(--s-6);
-  color: var(--fg-muted);
-}
-
-.fundamentals__list {
+.fundamentals__rows {
   display: flex;
   flex-direction: column;
-  gap: var(--s-6);
+  gap: var(--s-5);
+  margin-top: var(--s-5);
 }
 
-/* ---- Entry ---- */
-
-.fundamental {
+.fundamentals__row {
   display: grid;
-  grid-template-columns: 2.25rem minmax(0, 1fr);
-  gap: 0 var(--s-3);
-  align-items: start;
+  gap: var(--s-2) var(--s-6);
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid var(--rule);
 }
 
-.fundamental__n {
-  grid-row: 1 / 2;
-  font-family: var(--font-mono);
-  font-size: var(--fs-micro);
-  letter-spacing: 0.14em;
-  color: var(--accent);
-  padding-top: 0.35rem;
+@media (min-width: 880px) {
+  .fundamentals__row {
+    grid-template-columns: 14rem minmax(0, 1fr);
+    align-items: baseline;
+  }
 }
 
-.fundamental__title {
-  grid-column: 2;
+.fundamentals__row-label {
   font-size: 1.0625rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
-  color: var(--fg);
-  text-wrap: balance;
+  letter-spacing: -0.022em;
+  color: var(--bone-100);
 }
 
-.fundamental__body {
-  grid-column: 2;
-  margin-top: 0.5rem;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: color-mix(in srgb, var(--bone-100) 68%, transparent);
-  text-wrap: pretty;
-}
-
-.fundamental__where {
-  grid-column: 2;
-  margin-top: 0.625rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+/* A run of names, the same idiom as the tech rows on a project page — not
+   bordered pills, which is the most template-looking element a portfolio can
+   have and appears nowhere else on this site. */
+.fundamentals__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.5rem;
   font-family: var(--font-mono);
   font-size: var(--fs-micro);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--fg-faint);
+  color: var(--graphite);
+  line-height: 2;
 }
 
-.fundamental__where::before {
-  content: '';
-  width: 12px;
-  height: 1px;
-  background: var(--accent);
-  opacity: 0.7;
+.fundamentals__tags li:not(:last-child)::after {
+  content: '/';
+  margin-left: 0.5rem;
+  color: var(--ink-500);
 }
 
-.fundamentals__practice {
-  margin-top: var(--s-8);
-  padding-top: var(--s-5);
-  border-top: 1px solid var(--rule);
-  color: var(--fg-faint);
+.fundamentals__note {
+  margin-top: var(--s-5);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--slate);
+  max-width: 62ch;
+  text-wrap: pretty;
 }
 
-.fundamentals__practice a {
-  color: var(--fg);
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 2px;
-  transition: border-color var(--dur-ui) var(--ease-out);
+.fundamentals__note a {
+  color: var(--graphite);
+  border-bottom: 1px solid var(--ink-500);
+  transition:
+    color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out);
 }
 
-.fundamentals__practice a:hover {
-  border-color: var(--accent);
-}
-
-@media (max-width: 899px) {
-  .fundamentals {
-    margin-top: var(--s-10);
-  }
-  .fundamental {
-    grid-template-columns: 1.75rem minmax(0, 1fr);
-  }
+.fundamentals__note a:hover {
+  color: var(--bone-100);
+  border-bottom-color: var(--vermilion);
 }

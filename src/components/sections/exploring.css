@@ -137,9 +137,11 @@
   min-height: 3.5em;
 }
 
+
 /* ============================================================
    When I'm not building.
-   A coda, not another card grid — the register change is the content.
+   Two drawings, two captions. The last block before contact, and
+   the one place on the site where nothing is being argued.
    ============================================================ */
 
 .off {
@@ -148,40 +150,166 @@
   border-top: 1px solid var(--rule);
 }
 
+.off__head {
+  max-width: 52ch;
+}
+
 .off__tag {
   display: block;
   color: var(--vermilion);
   letter-spacing: 0.24em;
 }
 
+.off__lede {
+  margin-top: var(--s-3);
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  letter-spacing: -0.012em;
+  color: color-mix(in srgb, var(--bone-100) 74%, transparent);
+  text-wrap: pretty;
+}
+
 .off__list {
   display: grid;
   gap: var(--s-8);
-  margin-top: var(--s-7);
+  margin-top: clamp(2.5rem, 6vh, 4rem);
 }
 
-@media (min-width: 720px) {
+@media (min-width: 760px) {
   .off__list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(2.5rem, 8vw, 6rem);
-    max-width: 44rem;
+    gap: clamp(2.5rem, 7vw, 5rem);
+    max-width: 52rem;
   }
 }
 
 .off__item {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.35rem var(--s-4);
-  align-items: baseline;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-5);
+  align-items: start;
+  margin: 0;
 }
 
-.off__glyph {
-  grid-row: 1 / 3;
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  line-height: 1;
-  color: var(--graphite);
-  /* Keep the pawn and the pencil off the emoji font on every platform. */
-  font-family: var(--font-serif);
+.off__art-wrap {
+  display: block;
+  width: clamp(5rem, 9vw, 6.5rem);
+  padding: 0.5rem;
+  border: 1px solid var(--rule);
+  background: var(--ink-800);
+  transition: border-color var(--dur-ui) var(--ease-out);
+}
+
+.off__item:hover .off__art-wrap {
+  border-color: color-mix(in srgb, var(--vermilion) 45%, transparent);
+}
+
+.off__art {
+  width: 100%;
+  height: auto;
+}
+
+/* ---- Chess ---- */
+
+.off__board rect {
+  fill: transparent;
+  stroke: var(--ink-600);
+  stroke-width: 1;
+}
+
+.off__board rect[data-dark='true'] {
+  fill: color-mix(in srgb, var(--bone-100) 4%, transparent);
+}
+
+.off__path {
+  stroke: var(--vermilion);
+  stroke-width: 2;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+}
+
+.off__from,
+.off__to {
+  fill: var(--vermilion);
+}
+
+.off__to {
+  opacity: 0;
+}
+
+/* ---- Pencil ---- */
+
+.off__stroke {
+  stroke: var(--vermilion);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+}
+
+.off__nib {
+  fill: var(--vermilion);
+  opacity: 0;
+}
+
+/* ---- The drawing ----
+   Both motifs stroke themselves once when the block comes on screen, then
+   hold. They are parked off-screen like every other loop on this site, and
+   they never repeat — a line that redraws itself forever is a distraction
+   sitting underneath a paragraph. */
+
+.off.is-onscreen .off__path {
+  animation: off-draw 1.5s var(--ease-out) 0.15s forwards;
+}
+
+.off.is-onscreen .off__to {
+  animation: off-land 0.4s var(--ease-out) 1.5s forwards;
+}
+
+.off.is-onscreen .off__stroke {
+  animation: off-draw-long 2.1s var(--ease-out) 0.25s forwards;
+}
+
+.off.is-onscreen .off__nib {
+  animation: off-land 0.4s var(--ease-out) 0.25s forwards;
+}
+
+/* Hover redraws it, which is the whole reward for pointing at a drawing. */
+@media (pointer: fine) {
+  .off__item:hover .off__path {
+    animation: off-draw 1.1s var(--ease-out) forwards;
+  }
+  .off__item:hover .off__stroke {
+    animation: off-draw-long 1.5s var(--ease-out) forwards;
+  }
+}
+
+@keyframes off-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes off-draw-long {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes off-land {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---- Caption ---- */
+
+.off__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .off__label {
@@ -195,7 +323,17 @@
   display: block;
   font-size: 0.9375rem;
   line-height: 1.5;
+  color: color-mix(in srgb, var(--bone-100) 68%, transparent);
+}
+
+.off__aside {
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--rule);
+  font-size: 0.8125rem;
+  line-height: 1.6;
   color: var(--slate);
+  text-wrap: pretty;
 }
 
 .off__closing {
@@ -210,4 +348,25 @@
   line-height: 1.25;
   letter-spacing: -0.015em;
   color: color-mix(in srgb, var(--bone-100) 82%, transparent);
+}
+
+/* Reduced motion: the drawings are finished rather than drawn. */
+@media (prefers-reduced-motion: reduce) {
+  .off__path,
+  .off__stroke {
+    stroke-dashoffset: 0;
+    animation: none !important;
+  }
+  .off__to,
+  .off__nib {
+    opacity: 1;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .off__item {
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+  }
 }

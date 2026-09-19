@@ -1,19 +1,44 @@
+/* ============================================================
+   One fixed noise plane for the whole document.
+
+   Two things here are performance decisions, not taste ones:
+
+   `inset: 0`, not `-50%`. The plane is `position: fixed`, so it never moves
+   with the scroll and never needs to be larger than the viewport. At -50% it
+   measured 750×1624 on a 375×812 phone — four times the pixels, composited
+   every frame, for no visible difference.
+
+   `mix-blend-mode` only on fine pointers. Blending a full-screen fixed layer
+   forces the compositor to read back everything underneath it on every frame,
+   which is one of the most expensive things a mobile GPU can be asked to do
+   while scrolling. Touch devices get a plain overlay instead: the texture is
+   still there, it just stops costing a backdrop readback per frame.
+
+   No `will-change`. Nothing animates this element, so the hint only pinned a
+   full-screen layer in GPU memory for the life of the page.
+   ============================================================ */
+
 .grain {
   position: fixed;
-  inset: -50%;
+  inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.04;
-  mix-blend-mode: overlay;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 160px 160px;
-  will-change: opacity;
+}
+
+@media (pointer: fine) {
+  .grain {
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+  }
 }
 
 /* The grain is decorative; if the user has asked for less, it also stops
    fighting text contrast on the bone sections. */
 @media (prefers-reduced-motion: reduce) {
   .grain {
-    opacity: 0.025;
+    opacity: 0.02;
   }
 }

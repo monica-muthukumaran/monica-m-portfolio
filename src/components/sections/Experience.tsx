@@ -100,11 +100,29 @@ export function Experience() {
 
         <Reveal>
           <div className="experience__foot">
-            <div>
+            {/* The Coding Shuttle cohort lives here rather than in a section of
+                its own. A certificate is supporting proof, and giving it a
+                whole section said the opposite of what it should. */}
+            <div className="experience__certs">
               <span className="t-label">Certifications</span>
               <ul>
                 {certifications.map((c) => (
-                  <li key={c}>{c}</li>
+                  <li key={c.title} className={`cert-item ${c.detail ? 'is-detailed' : ''}`}>
+                    <span className="cert-item__title">
+                      {c.title}
+                      {c.year && <span className="cert-item__year num"> · {c.year}</span>}
+                    </span>
+                    <span className="cert-item__issuer">
+                      {c.href ? (
+                        <a href={c.href} target="_blank" rel="noreferrer">
+                          {c.issuer}
+                        </a>
+                      ) : (
+                        c.issuer
+                      )}
+                    </span>
+                    {c.detail && <span className="cert-item__detail">{c.detail}</span>}
+                  </li>
                 ))}
               </ul>
             </div>

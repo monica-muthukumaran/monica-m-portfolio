@@ -1,15 +1,27 @@
 /**
  * The two things that are not engineering.
  *
- * Kept short and set quietly. The glyphs are text-presentation characters
- * (U+265F, U+270E) rather than emoji — the emoji variants render in colour on
- * some platforms, and nothing else on this site is in colour.
+ * Each one is drawn rather than set in a glyph: a knight's move on a board
+ * fragment, and a line that draws itself. An emoji would have been one
+ * character of work and would have been the only piece of colour on the site.
+ * `motif` picks the drawing in Exploring.tsx.
  */
 export const offHours = {
   heading: 'When I’m not building',
+  lede: 'Two things that are not engineering, and have both turned out to be about it anyway.',
   items: [
-    { glyph: '♟', label: 'Chess', note: ['A few moves ahead,', 'usually.'] },
-    { glyph: '✎', label: 'Pencil art', note: ['Slowing down', 'to notice the details.'] },
+    {
+      motif: 'chess' as const,
+      label: 'Chess',
+      note: ['A few moves ahead,', 'usually.'],
+      aside: 'The only game where the mistake was made four moves before you noticed it.',
+    },
+    {
+      motif: 'pencil' as const,
+      label: 'Pencil art',
+      note: ['Slowing down', 'to notice the details.'],
+      aside: 'Drawing something is the fastest way to find out you were not really looking at it.',
+    },
   ],
   closing: ['Different pace.', 'Same curiosity.'],
 } as const

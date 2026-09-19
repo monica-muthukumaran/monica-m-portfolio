@@ -46,12 +46,23 @@ export type Project = {
    * different state from `tech`, under its own label — never merged into it.
    */
   techDesigned?: readonly string[]
-  problem: string
-  solution: string
+  /**
+   * The whole project in two sentences: what was hard, and what was done about
+   * it. This is the only prose on the index, and the opening of the project
+   * page. If it needs a third sentence, the second one is not doing its job.
+   */
+  brief: string
+  /**
+   * Four lines at most, each one a decision rather than a description. A reader
+   * who wants more opens the case study below; a reader who does not should be
+   * able to finish this list in fifteen seconds.
+   */
   architecture: readonly string[]
   impact: readonly { value: string; label: string }[]
   /** The one detail that makes the project memorable in conversation. */
   note?: { label: string; body: string }
+  /** What this project is evidence of. One or two words, shown on the index. */
+  kind: string
   /** External recognition. Rendered as a single restrained badge in the header. */
   award?: Award
   /**
@@ -89,17 +100,15 @@ const allProjects: readonly Project[] = [
     year: '2026',
     context: 'Independent product · Accounts payable & procurement',
     signature: 'bands',
+    kind: 'AI · Evidence',
     tech: ['Python', 'Flask', 'Google ADK', 'Gemini', 'Firestore', 'BigQuery', 'Cloud Run', 'React'],
-    problem:
-      'A three-way match approves an invoice by comparing it against its own purchase order and goods receipt. That is exactly why the most expensive failures survive it. The same work billed twice under a new number, four instalments that each pass but together exceed the order, a supplier’s bank details quietly changing, a rate creeping three percent a month inside tolerance every month — none of those are visible from inside the invoice they arrive on.',
-    solution:
-      'Five cross-case checks that read the rest of the workspace rather than the current document, layered onto a conventional matcher. The AI layer is deliberately confined to language and judgement — severity, plain-language explanation, a cited draft to the vendor, ranked hypotheses about what to check next. Matching, tolerance, financial impact and all five cross-case findings are plain Python, because a number a human acts on must never come from a model.',
+    brief:
+      'A three-way match approves an invoice by comparing it against its own purchase order, which is exactly why the expensive failures survive it — a duplicate under a new number, four instalments that each pass, a rate creeping inside tolerance every month. So the checks read the rest of the workspace instead of the current document, and every number a human acts on is computed in plain Python rather than produced by a model.',
     architecture: [
-      'Flask API with four Google ADK agents on Gemini; every agent has a deterministic parser fallback that reads real bytes rather than inventing them.',
-      'Deterministic core — matching, tolerance, financial impact, evidence graph and portfolio analytics — isolated in services that never call a model.',
-      'A trust ledger compares every model-produced financial figure against the deterministic match result, overwrites on mismatch, and records the agreement or disagreement as a visible row instead of a log line.',
-      'The hypothesis agent’s output schema contains no numeric field at all, so it is structurally incapable of fabricating a figure.',
-      'Firestore for cases, BigQuery for portfolio analytics, Cloud Storage for documents, Cloud Run for the API, Firebase Hosting for the React client.',
+      'Four Gemini agents behind a Flask API, each with a deterministic parser fallback.',
+      'Matching, tolerance, financial impact and all five cross-case checks never call a model.',
+      'A trust ledger compares every model figure against the deterministic result and overwrites on mismatch.',
+      'The hypothesis agent’s output schema has no numeric field, so it cannot fabricate one.',
     ],
     impact: [
       { value: '321', label: 'invoice synthetic portfolio' },
@@ -115,7 +124,7 @@ const allProjects: readonly Project[] = [
     note: {
       label: 'What I did not expect',
       body:
-        'The deterministic core fabricated a finding. Somebody uploaded the wrong purchase order — an invoice for 100 steel pipes matched against an order for 12 office chairs — and the system reported a quantity variance of 211,200 at high risk, basis "88 unreceived units". 88 is 100 minus 12. Every digit invented, no model involved. Confident fabrication turns out not to be a property of language models; it is a property of any system that answers a question without checking whether the question makes sense. A coherence check now runs before any variance is computed.',
+        'The deterministic core fabricated a finding. An invoice for 100 steel pipes was matched against an order for 12 office chairs, and the system reported a variance of 211,200 at high risk, basis “88 unreceived units” — every digit invented, no model involved. Confident fabrication is not a property of language models; it is a property of any system that answers a question without checking whether the question makes sense.',
     },
     links: [{ label: 'Write-up', href: 'https://github.com/monica-muthukumaran' }],
   },
@@ -133,17 +142,14 @@ const allProjects: readonly Project[] = [
     credential: { label: 'Coding Shuttle', detail: 'Spring Boot 0 to 100 · Cohort 5.0' },
     tech: ['Java 25', 'Spring Boot 4.1', 'Spring Data JPA', 'PostgreSQL', 'Bean Validation', 'Lombok'],
     techDesigned: ['Kafka', 'Redis', 'Resilience4j', 'SAGA', 'Webhooks', 'Docker', 'Kubernetes'],
-    problem:
-      'A payment API is easy to write for the case where everything works. The hard part is everything else: the network drops after the charge but before the response, the customer presses pay twice, the provider calls your webhook five times for one event, a card has to be stored without ever storing a CVV, and a support agent needs to know exactly what the payment was doing at 02:14. None of that is a feature you add later — it is decided in the schema, before any service exists.',
-    solution:
-      'I started this one at the data model rather than the controller, on the argument that in payments the schema is the system. Fourteen entities covering merchant onboarding and KYC, API keys, orders, payments, refunds, a card vault, webhook delivery and a dead-letter queue — designed so that the properties that matter cannot be forgotten later: idempotency keys are unique constraints, the audit log has no update path, and there is nowhere in the schema a CVV could be written even by accident.',
+    kind: 'Distributed systems',
+    brief:
+      'A payment API is easy to write for the case where everything works; the hard part is the network dropping after the charge, the customer pressing pay twice, and the provider sending the same webhook five times. So I started at the schema rather than the controller — fourteen entities in which idempotency is a unique constraint, the audit log has no update path, and there is nowhere a CVV could be written even by accident.',
     architecture: [
-      'Idempotency as a schema constraint, not a convention: both the order and the payment carry an idempotency key, and the order’s is a unique key — a retried request collides at the database rather than charging twice.',
-      'Money is stored as integer paise on every amount. Nothing in the model is a float.',
-      'Webhook delivery is modelled as state, not a fire-and-forget call: each event holds its attempt count, next and last retry timestamps, last response code and target URL, with a dead-letter table that records the final error and keeps a replay timestamp.',
-      'API keys rotate with an explicit grace window — the record holds both a rotation time and a grace-period expiry, so a merchant can move keys without a broken deploy.',
-      'The card vault stores an encrypted PAN and a separately encrypted data key, plus BIN, brand and last four. There is no CVV column, and the model notes why: storing one is a compliance violation. Merchant-scoped card tokens sit in front of the vault.',
-      'Payment state changes are written to an append-only audit log — from-status, to-status, actor, reason, occurred-at — with no update path, so the payment timeline is reconstructable.',
+      'Idempotency as a unique constraint, not a convention — a retry collides at the database.',
+      'Every amount is integer paise. Nothing in the model is a float.',
+      'Webhook delivery is a row with attempt count and retry state, ending in a dead-letter table.',
+      'Status changes append to an audit log with no update path, so the timeline survives a dispute.',
     ],
     impact: [
       { value: '14', label: 'entities in the payment domain model' },
@@ -154,7 +160,7 @@ const allProjects: readonly Project[] = [
     note: {
       label: 'Where this actually stands',
       body:
-        'The design is ahead of the code, and I would rather say so than imply otherwise. What is committed is the Spring Boot application, the merchant aggregate and the enums around it; the payment, refund, vault and webhook services are modelled but not yet built. The reason the model came first is that idempotency, an immutable audit trail and a keyless card vault are all things you cannot retrofit — they are unique constraints and absent columns, and both are decisions you make once.',
+        'The design is ahead of the code, and I would rather say so. Committed: the Spring Boot application, the merchant aggregate and its enums. Modelled but not built: the payment, refund, vault and webhook services. The model came first because idempotency, an immutable audit trail and a keyless vault cannot be retrofitted — they are constraints and absent columns, decided once.',
     },
     links: [{ label: 'Repository', href: 'https://github.com/monica-muthukumaran/Razorpay-Application' }],
   },
@@ -170,16 +176,14 @@ const allProjects: readonly Project[] = [
     study: 'social',
     credential: { label: 'Coding Shuttle', detail: 'Spring Boot 0 to 100 · Cohort 5.0' },
     tech: ['Spring Boot', 'Microservices', 'Kafka', 'Redis', 'Neo4j', 'REST APIs'],
-    problem:
-      'A professional network is two systems wearing one interface. One of them is a graph — who knows whom, who follows whom, who shares an interest with whom — and the questions worth asking of it are all about paths rather than rows. The other is a firehose: one post has to reach a feed, a notification and an analytics counter, and the person who wrote it should not be waiting while any of that happens.',
-    solution:
-      'I built it as separate services behind one gateway, with the connection model in Neo4j rather than beside the rest of the data, and Kafka between the write side and everything that reacts to a write. The feed reads through Redis, because a feed is read far more often than it is written — which is the condition that makes a cache worth the two places it creates for you to be wrong.',
+    kind: 'Distributed systems · Graph',
+    brief:
+      'A professional network is two systems wearing one interface: a graph, where every question worth asking is about paths rather than rows, and a firehose, where one post must reach a feed, a notification and a counter without the author waiting for any of it. So the connection model went into Neo4j, and Kafka sits between the write and everything that reacts to it.',
     architecture: [
-      'Services split by what they own — profiles and connections, posts, feed, notifications — with an API gateway as the single entrance so a client never needs to know how many there are.',
-      'Connections modelled as a property graph in Neo4j: a second-degree recommendation is a traversal, not a self-join that gets worse with every hop.',
-      'Kafka between the write and the reactions. Posting publishes an event and returns; the feed, notification and analytics consumers each read it on their own schedule.',
+      'Five services behind one gateway, split by what they own rather than by layer.',
+      'Connections as a property graph — a second-degree recommendation is a traversal, not a self-join.',
+      'Posting publishes an event and returns; feed, notification and analytics each read on their own schedule.',
       'Redis on the feed read path, populated on a miss, so the common case is the fast one.',
-      'REST APIs between the client and the gateway; events, not calls, between the services themselves.',
     ],
     impact: [
       { value: 'Neo4j', label: 'connections as a property graph' },
@@ -190,7 +194,7 @@ const allProjects: readonly Project[] = [
     note: {
       label: 'What I actually took from it',
       body:
-        'That the database choice is a consequence of the query, not a preference. I had written second-degree connection logic against a relational schema before and thought the pain was mine. It was the shape: every extra hop is another join, and the query stops reading like the question. Moving the connection model into a graph did not make the system clever — it made the hard query legible, which is a different and more useful thing.',
+        'That the database choice is a consequence of the query, not a preference. I had written second-degree connection logic against a relational schema and thought the pain was mine; it was the shape. Moving the model into a graph did not make the system clever — it made the hard query legible, which is a different and more useful thing.',
     },
   },
 
@@ -203,16 +207,14 @@ const allProjects: readonly Project[] = [
     context: 'Citi · Capital markets',
     signature: 'tree',
     tech: ['Java', 'Spring Boot', 'Kafka', 'MongoDB', 'OpenShift', 'AppDynamics', 'Angular'],
-    problem:
-      'Wealth Product Taxonomy classification needed to run continuously over a moving catalogue of financial products, with every classification traceable to the rule that produced it. The shape of the problem was clear from a prototype I built in Python and FastAPI; the shape of the production system was not the same shape.',
-    solution:
-      'I re-architected it as two Java Spring Boot microservices with a single responsibility each — a classification service that resolves a product to a node in the hierarchy, and an enrichment service that decorates it downstream — connected by Kafka rather than a synchronous call, so enrichment falling behind slows the pipeline instead of failing the classification.',
+    kind: 'Financial systems',
+    brief:
+      'Wealth Product Taxonomy classification had to run continuously over a moving catalogue, with every result traceable to the rule that produced it. I prototyped it in Python to settle the modelling questions cheaply, then threw that away and rebuilt it as two Spring Boot services with Kafka between them — so enrichment falling behind slows the pipeline instead of failing the classification.',
     architecture: [
-      'Classification and enrichment split into separate deployables so they can fail, scale and release independently.',
-      'Kafka between them: classification publishes, enrichment consumes. Back-pressure becomes lag, not errors.',
-      'Hierarchical taxonomy resolution over MongoDB, with the traversal kept in code that can be unit-tested against a fixture tree.',
-      'AppDynamics instrumentation on both services; deployed to OpenShift through Harness pipelines.',
-      'Prototyped first in Python, FastAPI, MongoDB and Angular — the prototype existed to answer modelling questions cheaply, then was thrown away.',
+      'Classification and enrichment as separate deployables — independent failure, scale and release.',
+      'Kafka between them, so back-pressure becomes consumer lag rather than errors.',
+      'Hierarchy resolution over MongoDB, kept in code so it unit-tests against a fixture tree.',
+      'AppDynamics on both services, deployed to OpenShift through Harness.',
     ],
     impact: [
       { value: '2', label: 'production microservices, owned end to end' },
@@ -230,10 +232,9 @@ const allProjects: readonly Project[] = [
     year: '2026',
     context: 'Independent product · Rural healthcare',
     tech: ['Gemma 2 2B', 'React Native', 'llama.rn', 'SQLite', 'CRDT', 'Gemini', 'Supabase'],
-    problem:
-      'More than 60% of rural primary health centres have intermittent or no connectivity, which makes a cloud-only assistant useless exactly where it is needed. The health workers who would use it largely do not work in English. And out-of-pocket medical cost is the leading cause of rural poverty, so a diagnosis without a financial answer leaves the patient no better off.',
-    solution:
-      'Gemma 2 2B quantised to INT4 runs on-device for triage, with Gemini as an upgrade path rather than a dependency when a connection appears. A four-agent pipeline separates triage routing, clinical assessment, financial counselling against Ayushman Bharat and Jan Aushadhi, and referral. A deterministic rule engine runs in parallel with the model and overrides it on emergency red flags, because a 2B model must not be the last line of defence on chest pain.',
+    kind: 'Edge AI · Healthcare',
+    brief:
+      'Most rural primary health centres have intermittent connectivity, which makes a cloud-only assistant useless exactly where it is needed. So Gemma 2 2B runs quantised on-device, with a non-LLM rule engine beside it that overrides the model on emergency red flags — because a 2B model must not be the last line of defence on chest pain.',
     architecture: [
       'On-device inference through llama.rn with output constrained to JSON schemas by grammar sampling — the model cannot return a shape the app did not ask for.',
       'A non-LLM red-flag engine runs alongside every inference and overrides it when a safety threshold is breached.',
@@ -264,10 +265,9 @@ const allProjects: readonly Project[] = [
     year: '2024 — present',
     context: 'Personal systems lab',
     tech: ['Java', 'Spring Boot', 'Kafka', 'Docker Compose', 'MySQL', 'JUnit'],
-    problem:
-      'A synchronous call between two services quietly couples their availability: registration fails because the notifier is down, and the failure surfaces to a user who did nothing wrong. I wanted somewhere to make that failure happen on purpose, repeatedly, and to try the answers with my hands rather than from a diagram.',
-    solution:
-      'A small event-driven topology — a user service and a notification service that never call each other — connected by Kafka and brought up as one unit in Docker Compose. Registration succeeds by publishing; notification is a consumer that may be slow, restarted, or absent, and the system stays correct in all three cases.',
+    kind: 'Systems lab',
+    brief:
+      'A synchronous call between two services quietly couples their availability: registration fails because the notifier is down, and a user who did nothing wrong sees the error. This is somewhere to cause that on purpose — two services that never call each other, one Docker Compose file, and a consumer that may be slow, restarted or absent.',
     architecture: [
       'Producer and consumer as separate Spring Boot deployables, sharing an event contract rather than a codebase.',
       'The entire topology — brokers, services, datastore — declared in one Docker Compose file so a broken broker is one command away.',
