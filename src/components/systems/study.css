@@ -1,0 +1,292 @@
+/* ============================================================
+   Case-study chrome, shared by both systems.
+   ============================================================ */
+
+.study {
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(3.5rem, 9vh, 6.5rem);
+}
+
+.study__head {
+  display: grid;
+  gap: var(--s-5);
+  margin-bottom: var(--s-10);
+}
+
+@media (min-width: 900px) {
+  .study__head {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: end;
+  }
+}
+
+.study__kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: var(--s-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--vermilion);
+}
+
+.study__kicker::before {
+  content: '';
+  width: 1.75rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.study__title {
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  max-width: 16ch;
+}
+
+.study__lede {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--bone-100) 78%, transparent);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.study__blocks {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 8vh, 5.5rem);
+}
+
+/* ---- Block ------------------------------------------------- */
+
+.study-block__head {
+  max-width: 62ch;
+  margin-bottom: var(--s-6);
+}
+
+.study-block__tag {
+  display: block;
+  color: var(--slate);
+}
+
+.study-block__title {
+  margin-top: var(--s-3);
+  font-size: clamp(1.25rem, 2.1vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.study-block__lede {
+  margin-top: var(--s-3);
+  font-size: 0.9375rem;
+  line-height: 1.62;
+  color: color-mix(in srgb, var(--bone-100) 70%, transparent);
+  text-wrap: pretty;
+}
+
+/* ---- Legend ------------------------------------------------ */
+
+.legend {
+  display: grid;
+  gap: var(--s-3) var(--s-6);
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+}
+
+@media (min-width: 720px) {
+  .legend {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.legend__item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 0.25rem 0.625rem;
+}
+
+.legend__mark {
+  width: 8px;
+  height: 8px;
+  align-self: center;
+  border: 1px solid var(--graphite);
+}
+
+.legend__item[data-state='built'] .legend__mark {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+}
+
+.legend__item[data-state='designed'] .legend__mark {
+  border-color: var(--vermilion);
+  background: transparent;
+}
+
+.legend__item[data-state='studied'] .legend__mark {
+  border-color: var(--ink-500);
+  border-style: dashed;
+  background: transparent;
+}
+
+.legend__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone-100);
+}
+
+.legend__blurb {
+  grid-column: 2;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--slate);
+}
+
+/* ---- Node -------------------------------------------------- */
+
+.node {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.15rem 0.625rem;
+  width: 100%;
+  padding: var(--s-3) var(--s-4);
+  text-align: left;
+  border: 1px solid var(--ink-500);
+  background: color-mix(in srgb, var(--bone-100) 2.5%, transparent);
+  transition:
+    border-color var(--dur-ui) var(--ease-out),
+    background-color var(--dur-ui) var(--ease-out),
+    transform var(--dur-ui) var(--ease-out);
+}
+
+.node__mark {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--graphite);
+}
+
+.node[data-state='built'] .node__mark {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+}
+
+.node[data-state='designed'] .node__mark {
+  border-color: var(--vermilion);
+}
+
+.node[data-state='studied'] {
+  border-style: dashed;
+}
+
+.node[data-state='studied'] .node__mark {
+  border-color: var(--ink-500);
+  border-style: dashed;
+}
+
+.node__label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--bone-100);
+}
+
+.node__role {
+  grid-column: 2;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+  color: var(--slate);
+}
+
+.node:hover,
+.node.is-active {
+  border-color: var(--vermilion);
+  background: color-mix(in srgb, var(--vermilion) 8%, transparent);
+}
+
+.node.is-active .node__role {
+  color: var(--graphite);
+}
+
+@media (pointer: fine) {
+  .node:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* ---- Readout ----------------------------------------------- */
+
+.readout {
+  min-height: 7.5rem;
+  padding: var(--s-4);
+  border: 1px solid var(--rule);
+  border-left: 1px solid var(--vermilion);
+  background: var(--ink-800);
+}
+
+.readout__state {
+  display: block;
+  margin-bottom: var(--s-2);
+  color: var(--vermilion);
+}
+
+.readout__body {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--bone-100) 76%, transparent);
+  text-wrap: pretty;
+}
+
+.readout__body--idle {
+  color: var(--slate);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+}
+
+/* ---- Controls shared by the interactive blocks -------------- */
+
+.switch {
+  display: inline-flex;
+  border: 1px solid var(--rule);
+  margin-bottom: var(--s-5);
+}
+
+.switch button {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+  transition:
+    color var(--dur-ui) var(--ease-out),
+    background-color var(--dur-ui) var(--ease-out);
+}
+
+.switch button + button {
+  border-left: 1px solid var(--rule);
+}
+
+.switch button[aria-pressed='true'] {
+  background: var(--vermilion);
+  color: #fff;
+}
+
+.switch button:not([aria-pressed='true']):hover {
+  color: var(--bone-100);
+}

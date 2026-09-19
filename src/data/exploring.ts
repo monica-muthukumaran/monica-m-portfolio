@@ -1,3 +1,19 @@
+/**
+ * The two things that are not engineering.
+ *
+ * Kept short and set quietly. The glyphs are text-presentation characters
+ * (U+265F, U+270E) rather than emoji — the emoji variants render in colour on
+ * some platforms, and nothing else on this site is in colour.
+ */
+export const offHours = {
+  heading: 'When I’m not building',
+  items: [
+    { glyph: '♟', label: 'Chess', note: ['A few moves ahead,', 'usually.'] },
+    { glyph: '✎', label: 'Pencil art', note: ['Slowing down', 'to notice the details.'] },
+  ],
+  closing: ['Different pace.', 'Same curiosity.'],
+} as const
+
 export type Exploration = {
   label: string
   note: string

@@ -84,6 +84,43 @@
   letter-spacing: -0.045em;
 }
 
+/* Honest state of the repository, said near the top rather than buried under
+   the result. A project that is mid-build should say so where it is named. */
+.project__status {
+  margin-top: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+/* Where the work was done, when that is a programme. Quiet on purpose — it is
+   context, not a prize, and the award badge below is the only element on this
+   page allowed a fill. */
+.project__credential {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.6rem;
+  margin-top: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.project__credential-issuer {
+  color: var(--bone-100);
+}
+
+.project__credential-detail {
+  padding-left: 0.6rem;
+  border-left: 1px solid var(--ink-500);
+  color: var(--slate);
+}
+
 .project__concept {
   margin-top: var(--s-4);
   font-size: var(--fs-lead);
@@ -159,6 +196,28 @@
   content: '/';
   margin-left: 0.5rem;
   color: var(--ink-500);
+}
+
+/* Designed around, not built with. Outlined rather than plain so the two rows
+   are distinguishable at a glance, with the distinction named in the row. */
+.project__tech--designed {
+  margin-top: var(--s-3);
+  color: var(--slate);
+}
+
+.project__tech--designed li:not(:last-child)::after {
+  color: var(--ink-600);
+}
+
+.project__tech-label {
+  padding: 0.05rem 0.4rem;
+  margin-right: 0.15rem;
+  border: 1px dashed var(--ink-500);
+  color: var(--slate);
+}
+
+.project__tech-label::after {
+  content: none !important;
 }
 
 /* ---- Step bar ---- */
@@ -401,22 +460,42 @@
   pointer-events: none;
 }
 
-.project__flat-visual .arch__svg {
+.project__flat-visual .arch__svg,
+.project__flat-visual .sig__svg {
   min-width: 600px;
+}
+
+/* The graph is the one drawing that reads fine narrow — it is a field, not a
+   row of labelled boxes — so it is allowed to fit the screen. */
+.project__flat-visual .sig--graph .sig__svg {
+  min-width: 0;
 }
 
 /* Label sizes are in SVG user units, so they have to grow as the drawing
    shrinks to keep the same size on screen. */
-.project__flat-visual .arch__label {
+.project__flat-visual .arch__label,
+.project__flat-visual .sig__label {
   font-size: 19px;
 }
 
-.project__flat-visual .arch__sub {
+.project__flat-visual .arch__sub,
+.project__flat-visual .sig__sub {
   font-size: 13px;
 }
 
-.project__flat-visual .arch__tag {
+.project__flat-visual .arch__tag,
+.project__flat-visual .sig__tag,
+.project__flat-visual .sig__depth {
   font-size: 12px;
+}
+
+.project__flat-visual .sig--graph .sig__label,
+.project__flat-visual .sig--graph .sig__node-label {
+  font-size: 13px;
+}
+
+.project__flat-visual .sig--graph .sig__rel {
+  font-size: 11px;
 }
 
 .project__flat-steps {
@@ -454,7 +533,7 @@
 
 @media (min-width: 900px) and (max-height: 940px) {
   .project__text {
-    gap: var(--s-4);
+    gap: var(--s-3);
   }
   .project__id {
     margin-bottom: var(--s-3);
@@ -468,6 +547,14 @@
   }
   .project__tech {
     margin-top: var(--s-3);
+    line-height: 1.7;
+  }
+  .project__status,
+  .project__credential {
+    margin-top: var(--s-2);
+  }
+  .project__tech--designed {
+    margin-top: var(--s-2);
   }
   .project__award {
     margin-top: var(--s-3);
@@ -477,13 +564,13 @@
     font-size: 9.5px;
   }
   .project__steps {
-    padding-top: var(--s-4);
+    padding-top: var(--s-3);
   }
   .project__stepbar {
-    margin-bottom: var(--s-4);
+    margin-bottom: var(--s-3);
   }
   .project__arch {
-    gap: var(--s-2);
+    gap: 0.4rem;
   }
   .project__arch li {
     font-size: 0.875rem;
@@ -511,5 +598,44 @@
   }
   .work {
     padding-bottom: var(--s-10);
+  }
+}
+
+/* ---- Repository / demo links, at the end of the last step ---- */
+
+.project__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-5);
+  margin-top: var(--s-5);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+}
+
+.project__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--ink-500);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  transition:
+    color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out);
+}
+
+.project__links a:hover {
+  color: var(--bone-100);
+  border-bottom-color: var(--vermilion);
+}
+
+@media (min-width: 900px) and (max-height: 940px) {
+  .project__links {
+    margin-top: var(--s-4);
+    padding-top: var(--s-3);
   }
 }

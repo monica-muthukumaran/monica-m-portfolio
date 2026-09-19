@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, type MotionValue } from 'motion/react'
 import { profile } from '../../data/profile'
+import { experience } from '../../data/experience'
 import { Eyebrow } from '../primitives/Eyebrow'
 import { Reveal } from '../primitives/Reveal'
 import { useEnvironment } from '../../hooks/useEnvironment'
@@ -29,6 +30,60 @@ function Word({
     <motion.span className={`statement__word ${word.em ? 'em' : ''}`} style={{ opacity }}>
       {word.text}
     </motion.span>
+  )
+}
+
+/**
+ * Where I work now, as a panel rather than a closing sentence.
+ *
+ * This is the first fact a visitor scans for, and the bottom of three
+ * paragraphs is the wrong place for the thing everybody is looking for.
+ * Everything in it is read from experience.ts, so the panel and the timeline
+ * further down the page can never disagree with each other.
+ */
+function NowPanel() {
+  const current = experience.find((role) => role.current)
+  const previous = experience.find((role) => !role.current)
+  if (!current) return null
+
+  return (
+    <aside className="now" aria-label="Current role">
+      <span className="now__tag t-label">Currently</span>
+
+      <p className="now__company">{current.company}</p>
+      <p className="now__role">{current.role}</p>
+
+      <dl className="now__facts">
+        <div>
+          <dt>Since</dt>
+          <dd className="num">{current.period.split('—')[0].trim()}</dd>
+        </div>
+        <div>
+          <dt>Team</dt>
+          <dd>{current.location}</dd>
+        </div>
+        <div>
+          <dt>Local</dt>
+          <dd className="num">{profile.timezone}</dd>
+        </div>
+      </dl>
+
+      <div className="now__stack">
+        <span className="t-label">Day to day</span>
+        <ul>
+          {current.stack.slice(0, 5).map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+      </div>
+
+      {previous && (
+        <p className="now__before">
+          <span className="now__before-label">Before</span>
+          {previous.company} · <span className="num">{previous.period}</span>
+        </p>
+      )}
+    </aside>
   )
 }
 
@@ -66,28 +121,24 @@ export function Statement() {
           </h2>
         </div>
 
-        {/* A lead at display weight, then the remainder set in two columns.
-            Three stacked paragraphs of equal size was a wall of text with no
-            hierarchy inside it — the thing that makes an "About me" read as one. */}
-        <Reveal>
-          <p className="statement__lead">{lead}</p>
-        </Reveal>
-
-        <div className="statement__rest">
-          {rest.map((para, i) => (
-            <Reveal key={i} delay={0.06 + i * 0.06} as="p" className="statement__para">
-              {para}
+        {/* Prose on the left, the current role on the right. The panel answers
+            the question a visitor actually arrives with. */}
+        <div className="statement__panels">
+          <div className="statement__prose">
+            <Reveal>
+              <p className="statement__lead">{lead}</p>
             </Reveal>
-          ))}
-        </div>
+            {rest.map((para, i) => (
+              <Reveal key={i} delay={0.06 + i * 0.06} as="p" className="statement__para">
+                {para}
+              </Reveal>
+            ))}
+          </div>
 
-        <Reveal delay={0.1}>
-          <p className="statement__now">
-            <span className="statement__now-label">Currently</span>
-            Application Development Programmer Analyst 2 at <strong>Citi</strong>, Capital Markets — Java, Spring Boot
-            and Kafka.
-          </p>
-        </Reveal>
+          <Reveal delay={0.08}>
+            <NowPanel />
+          </Reveal>
+        </div>
       </div>
     </section>
   )

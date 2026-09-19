@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { exploring } from '../../data/exploring'
+import { exploring, offHours } from '../../data/exploring'
 import { Eyebrow } from '../primitives/Eyebrow'
 import { MaskText } from '../primitives/MaskText'
 import { Reveal } from '../primitives/Reveal'
@@ -81,7 +81,7 @@ export function Exploring() {
   return (
     <section className="section exploring" aria-labelledby="exploring-heading">
       <div className="shell">
-        <Eyebrow index="06">Currently exploring</Eyebrow>
+        <Eyebrow index="07">Currently exploring</Eyebrow>
 
         <div className="exploring__head">
           <h2 id="exploring-heading" className="t-h2 exploring__heading">
@@ -135,7 +135,54 @@ export function Exploring() {
             </p>
           </>
         )}
+
+        <OffHours />
       </div>
     </section>
+  )
+}
+
+/**
+ * The part of the page that is not about engineering at all.
+ *
+ * Two items, set as a wide-tracked coda rather than another card grid — the
+ * page has had enough systems by this point, and the change of register is
+ * the content.
+ */
+function OffHours() {
+  return (
+    <div className="off">
+      <Reveal>
+        <span className="off__tag t-label">{offHours.heading}</span>
+      </Reveal>
+
+      <ul className="off__list">
+        {offHours.items.map((item, i) => (
+          <li key={item.label}>
+            <Reveal delay={0.06 + i * 0.08}>
+              <div className="off__item">
+                <span className="off__glyph" aria-hidden="true">
+                  {item.glyph}
+                </span>
+                <h3 className="off__label">{item.label}</h3>
+                <p className="off__note">
+                  {item.note.map((line) => (
+                    <span key={line}>{line}</span>
+                  ))}
+                </p>
+              </div>
+            </Reveal>
+          </li>
+        ))}
+      </ul>
+
+      <Reveal delay={0.2}>
+        <p className="off__closing">
+          {offHours.closing.map((line) => (
+            <span key={line}>{line}</span>
+          ))}
+        </p>
+      </Reveal>
+    </div>
   )
 }

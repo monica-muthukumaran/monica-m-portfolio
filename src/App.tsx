@@ -7,9 +7,11 @@ import { Grain } from './components/chrome/Grain'
 import { Hero } from './components/sections/Hero'
 import { Statement } from './components/sections/Statement'
 import { Work } from './components/sections/Work'
+import { Compare } from './components/sections/Compare'
 import { Engineering } from './components/sections/Engineering'
 import { Thinking } from './components/sections/Thinking'
 import { Experience } from './components/sections/Experience'
+import { Certification } from './components/sections/Certification'
 import { Exploring } from './components/sections/Exploring'
 import { Contact } from './components/sections/Contact'
 
@@ -36,9 +38,11 @@ function Page() {
         <Hero />
         <Statement />
         <Work />
+        <Compare />
         <Engineering />
         <Thinking />
         <Experience />
+        <Certification />
         <Exploring />
         <Contact />
       </main>

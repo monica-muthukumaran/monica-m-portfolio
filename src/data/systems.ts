@@ -319,6 +319,8 @@ export type GraphNode = {
   /** Position in the field, in percent. Placed by eye. */
   x: number
   y: number
+  /** Narrative step this node appears on, so the graph grows as it is told. */
+  at: number
 }
 
 export type GraphEdge = {
@@ -326,24 +328,25 @@ export type GraphEdge = {
   to: string
   /** Rendered along the line, in Neo4j's uppercase relationship idiom. */
   label: string
+  at: number
 }
 
 export const socialGraph: { nodes: readonly GraphNode[]; edges: readonly GraphEdge[] } = {
   nodes: [
-    { id: 'a', label: 'User A', kind: 'person', x: 27, y: 50 },
-    { id: 'b', label: 'User B', kind: 'person', x: 72, y: 19 },
-    { id: 'c', label: 'User C', kind: 'person', x: 80, y: 55 },
-    { id: 'd', label: 'User D', kind: 'person', x: 60, y: 87 },
-    { id: 'p', label: 'Post', kind: 'content', x: 22, y: 86 },
-    { id: 't', label: 'Distributed systems', kind: 'topic', x: 24, y: 13 },
+    { id: 'a', label: 'User A', kind: 'person', x: 27, y: 50, at: 0 },
+    { id: 'b', label: 'User B', kind: 'person', x: 72, y: 19, at: 1 },
+    { id: 'c', label: 'User C', kind: 'person', x: 80, y: 55, at: 1 },
+    { id: 'd', label: 'User D', kind: 'person', x: 60, y: 87, at: 1 },
+    { id: 'p', label: 'Post', kind: 'content', x: 22, y: 86, at: 2 },
+    { id: 't', label: 'Distributed systems', kind: 'topic', x: 24, y: 13, at: 3 },
   ],
   edges: [
-    { from: 'a', to: 'b', label: 'CONNECTED_TO' },
-    { from: 'a', to: 'c', label: 'FOLLOWS' },
-    { from: 'a', to: 'd', label: 'INTERACTS_WITH' },
-    { from: 'a', to: 'p', label: 'AUTHORED' },
-    { from: 'a', to: 't', label: 'INTERESTED_IN' },
-    { from: 'b', to: 't', label: 'INTERESTED_IN' },
+    { from: 'a', to: 'b', label: 'CONNECTED_TO', at: 1 },
+    { from: 'a', to: 'c', label: 'FOLLOWS', at: 1 },
+    { from: 'a', to: 'd', label: 'INTERACTS_WITH', at: 1 },
+    { from: 'a', to: 'p', label: 'AUTHORED', at: 2 },
+    { from: 'a', to: 't', label: 'INTERESTED_IN', at: 3 },
+    { from: 'b', to: 't', label: 'INTERESTED_IN', at: 3 },
   ],
 }
 

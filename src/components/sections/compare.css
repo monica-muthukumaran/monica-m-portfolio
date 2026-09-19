@@ -1,0 +1,109 @@
+.compare {
+  border-top: 1px solid var(--rule);
+}
+
+.compare__heading {
+  max-width: 14ch;
+}
+
+.compare__pair {
+  display: grid;
+  gap: var(--s-5);
+  margin-top: var(--s-10);
+}
+
+@media (min-width: 860px) {
+  .compare__pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+  }
+}
+
+.compare__side {
+  min-width: 0;
+}
+
+.compare__card {
+  height: 100%;
+  padding: var(--s-6) var(--s-5);
+  border: 1px solid var(--rule);
+  background: var(--ink-800);
+}
+
+.compare__key {
+  display: block;
+  color: var(--vermilion);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.2em;
+}
+
+.compare__challenge-label {
+  margin-top: var(--s-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.compare__challenge {
+  margin-top: var(--s-3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: clamp(1.375rem, 3vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  color: var(--bone-100);
+}
+
+.compare__line {
+  margin-top: var(--s-5);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--bone-100) 68%, transparent);
+  text-wrap: pretty;
+}
+
+/* ---- The merge ---- */
+
+.compare__merge {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin-top: clamp(2.5rem, 6vh, 4.5rem);
+}
+
+.compare__merge-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--vermilion), transparent);
+}
+
+.compare__merge-word {
+  flex: none;
+  font-size: clamp(1.25rem, 4vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--bone-100);
+  text-align: center;
+}
+
+.compare__closing {
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+  font-size: 1rem;
+  line-height: 1.68;
+  color: color-mix(in srgb, var(--bone-100) 72%, transparent);
+  text-wrap: pretty;
+}
+
+@media (max-width: 620px) {
+  .compare__merge-word {
+    font-size: 1.125rem;
+    letter-spacing: 0.06em;
+  }
+}

@@ -43,10 +43,16 @@ export const profile = {
   },
 } as const
 
+/**
+ * Six destinations, in reading order. `Thinking` is still a section on the
+ * page but is not a nav entry — it is a pause between Engineering and
+ * Experience, and a nav with eight items stops being a map.
+ */
 export const nav = [
+  { id: 'top', label: 'Home' },
   { id: 'work', label: 'Work' },
   { id: 'engineering', label: 'Engineering' },
-  { id: 'thinking', label: 'Thinking' },
   { id: 'experience', label: 'Experience' },
+  { id: 'certification', label: 'Certification' },
   { id: 'contact', label: 'Contact' },
 ] as const

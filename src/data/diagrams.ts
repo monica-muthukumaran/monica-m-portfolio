@@ -55,6 +55,42 @@ export const diagrams: Record<string, readonly DiagramBand[]> = {
     },
   ],
 
+  /* Drawn as lanes, not bands — see Signature.tsx. A payment is one object
+     moving down a track past stations that each have to be survivable. */
+  'payment-gateway': [
+    {
+      tag: 'Accept',
+      boxes: [
+        { label: 'Payment API', sub: 'merchant key · idempotency key' },
+        { label: 'Order', sub: 'unique idempotency key' },
+      ],
+    },
+    {
+      tag: 'Authorise',
+      accent: true,
+      boxes: [
+        { label: 'Payment service', sub: 'authorise · capture · refund', accent: true },
+        { label: 'Audit log', sub: 'append-only, no update path', accent: true },
+      ],
+    },
+    {
+      tag: 'Publish',
+      boxes: [{ label: 'Kafka', sub: 'the seam — everything after is a consumer' }],
+    },
+    {
+      tag: 'React',
+      boxes: [
+        { label: 'Ledger', sub: 'integer paise' },
+        { label: 'Settlement', sub: 'scheduled' },
+        { label: 'Webhooks', sub: 'delivery state · dead letter' },
+      ],
+    },
+  ],
+
+  /* No entry for 'social-platform' on purpose: it is drawn as a graph, and its
+     nodes and relationships live in `socialGraph` in systems.ts. Bands would
+     be unused data that looks authoritative. */
+
   'taxonomy-engine': [
     {
       tag: 'Source',

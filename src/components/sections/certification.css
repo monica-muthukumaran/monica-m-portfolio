@@ -1,0 +1,243 @@
+/* ============================================================
+   Certification — supporting proof, sized like supporting proof.
+   ============================================================ */
+
+.cert__grid {
+  display: grid;
+  gap: var(--s-8);
+  margin-top: var(--s-6);
+}
+
+@media (min-width: 920px) {
+  .cert__grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+}
+
+/* Two steps below the section headings above it. The certificate must not
+   out-typeset a project. */
+.cert__heading {
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.032em;
+  line-height: 1.1;
+  max-width: 22ch;
+}
+
+.cert__summary {
+  margin-top: var(--s-5);
+  font-size: 1rem;
+  line-height: 1.68;
+  color: color-mix(in srgb, var(--bone-100) 74%, transparent);
+  max-width: 58ch;
+  text-wrap: pretty;
+}
+
+.cert__covered {
+  margin-top: var(--s-7);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+}
+
+.cert__covered ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.5rem;
+  margin-top: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  line-height: 1.95;
+}
+
+.cert__covered li:not(:last-child)::after {
+  content: '/';
+  margin-left: 0.5rem;
+  color: var(--ink-500);
+}
+
+.cert__covered-note {
+  margin-top: var(--s-4);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--slate);
+  max-width: 54ch;
+  text-wrap: pretty;
+}
+
+/* ---- The plate ---- */
+
+.cert__plate {
+  position: relative;
+  padding: var(--s-7) var(--s-5) var(--s-5);
+  border: 1px solid var(--rule);
+  background:
+    radial-gradient(120% 120% at 85% 0%, color-mix(in srgb, var(--vermilion) 6%, transparent) 0%, transparent 60%),
+    var(--ink-800);
+}
+
+.cert__plate-tag {
+  position: absolute;
+  top: calc(-1 * var(--s-3));
+  left: var(--s-5);
+  padding-inline: var(--s-3);
+  background: var(--ink-900);
+  color: var(--slate);
+}
+
+.cert__issuer {
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--bone-100);
+}
+
+.cert__programme {
+  margin-top: 0.35rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+  letter-spacing: -0.01em;
+  color: var(--vermilion);
+}
+
+.cert__facts {
+  display: grid;
+  gap: var(--s-3);
+  margin: var(--s-5) 0 0;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+}
+
+.cert__facts > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+}
+
+.cert__facts dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.cert__facts dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.06em;
+  color: var(--bone-100);
+}
+
+.cert__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-4);
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+}
+
+.cert__view {
+  padding: 0.625rem 1.125rem;
+  border: 1px solid var(--vermilion);
+  background: var(--vermilion);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition:
+    background-color var(--dur-ui) var(--ease-out),
+    color var(--dur-ui) var(--ease-out);
+}
+
+.cert__view:hover {
+  background: transparent;
+  color: var(--vermilion);
+}
+
+.cert__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0.15rem;
+  transition:
+    color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out);
+}
+
+.cert__link:hover {
+  color: var(--bone-100);
+  border-bottom-color: var(--vermilion);
+}
+
+/* ---- Lightbox ---- */
+
+.cert-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  background: color-mix(in srgb, var(--ink-900) 88%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.cert-modal__frame {
+  width: min(100%, 60rem);
+  max-height: 88vh;
+  overflow: auto;
+  border: 1px solid var(--ink-600);
+  background: var(--ink-800);
+}
+
+.cert-modal__bar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--ink-600);
+  background: var(--ink-800);
+}
+
+.cert-modal__bar button {
+  display: inline-flex;
+  color: var(--graphite);
+  transition: color var(--dur-ui) var(--ease-out);
+}
+
+.cert-modal__bar button:hover {
+  color: var(--bone-100);
+}
+
+.cert-modal__frame img {
+  width: 100%;
+  height: auto;
+}
+
+.cert-modal__pdf {
+  width: 100%;
+  height: 70vh;
+  border: 0;
+}

@@ -15,6 +15,16 @@ export type Award = {
   year: string
 }
 
+/**
+ * The visual language a project is drawn in. Four projects drawn by one
+ * renderer look like four instances of a template, so each one gets the form
+ * its own domain actually has: evidence converging, a transaction moving down
+ * a lane, a graph spreading out, a hierarchy resolving. Colour stays constant —
+ * vermilion is the site's only accent, and four accent hues would cheapen it.
+ * The identity is the shape.
+ */
+export type Signature = 'bands' | 'lanes' | 'graph' | 'tree'
+
 export type Project = {
   id: string
   index: string
@@ -22,7 +32,20 @@ export type Project = {
   concept: string
   year: string
   context: string
+  /** How this project's system is drawn. Defaults to 'bands'. */
+  signature?: Signature
+  /**
+   * Renders the long-form interactive case study under the scene. Keyed by id
+   * in CaseStudy.tsx; omit for projects that tell their whole story in-scene.
+   */
+  study?: 'payment' | 'social'
   tech: readonly string[]
+  /**
+   * Technologies the system is designed around or that were worked through in
+   * a cohort, but which are not in this repository. Rendered in a visibly
+   * different state from `tech`, under its own label — never merged into it.
+   */
+  techDesigned?: readonly string[]
   problem: string
   solution: string
   architecture: readonly string[]
@@ -65,6 +88,7 @@ const allProjects: readonly Project[] = [
     concept: 'An exception engine that investigates what passed, not just what failed.',
     year: '2026',
     context: 'Independent product · Accounts payable & procurement',
+    signature: 'bands',
     tech: ['Python', 'Flask', 'Google ADK', 'Gemini', 'Firestore', 'BigQuery', 'Cloud Run', 'React'],
     problem:
       'A three-way match approves an invoice by comparing it against its own purchase order and goods receipt. That is exactly why the most expensive failures survive it. The same work billed twice under a new number, four instalments that each pass but together exceed the order, a supplier’s bank details quietly changing, a rate creeping three percent a month inside tolerance every month — none of those are visible from inside the invoice they arrive on.',
@@ -103,9 +127,12 @@ const allProjects: readonly Project[] = [
     concept: 'Engineering a payment system where reliability matters more than the happy path.',
     year: '2026',
     status: 'In progress — domain model implemented, services in design',
-    context: 'Independent build · Payments infrastructure',
+    context: 'Payments infrastructure · Distributed systems',
+    signature: 'lanes',
+    study: 'payment',
     credential: { label: 'Coding Shuttle', detail: 'Spring Boot 0 to 100 · Cohort 5.0' },
     tech: ['Java 25', 'Spring Boot 4.1', 'Spring Data JPA', 'PostgreSQL', 'Bean Validation', 'Lombok'],
+    techDesigned: ['Kafka', 'Redis', 'Resilience4j', 'SAGA', 'Webhooks', 'Docker', 'Kubernetes'],
     problem:
       'A payment API is easy to write for the case where everything works. The hard part is everything else: the network drops after the charge but before the response, the customer presses pay twice, the provider calls your webhook five times for one event, a card has to be stored without ever storing a CVV, and a support agent needs to know exactly what the payment was doing at 02:14. None of that is a feature you add later — it is decided in the schema, before any service exists.',
     solution:
@@ -117,7 +144,6 @@ const allProjects: readonly Project[] = [
       'API keys rotate with an explicit grace window — the record holds both a rotation time and a grace-period expiry, so a merchant can move keys without a broken deploy.',
       'The card vault stores an encrypted PAN and a separately encrypted data key, plus BIN, brand and last four. There is no CVV column, and the model notes why: storing one is a compliance violation. Merchant-scoped card tokens sit in front of the vault.',
       'Payment state changes are written to an append-only audit log — from-status, to-status, actor, reason, occurred-at — with no update path, so the payment timeline is reconstructable.',
-      'Implemented so far: the Spring Boot service, the merchant aggregate with KYC status and settlement bank details, the business-type and status enums, bean validation and the PostgreSQL mapping.',
     ],
     impact: [
       { value: '14', label: 'entities in the payment domain model' },
@@ -134,12 +160,48 @@ const allProjects: readonly Project[] = [
   },
 
   {
-    id: 'taxonomy-engine',
+    id: 'social-platform',
     index: '03',
+    name: 'Distributed Social Platform',
+    concept: 'Building the systems behind a professional network.',
+    year: '2026',
+    context: 'Distributed systems · Graph data',
+    signature: 'graph',
+    study: 'social',
+    credential: { label: 'Coding Shuttle', detail: 'Spring Boot 0 to 100 · Cohort 5.0' },
+    tech: ['Spring Boot', 'Microservices', 'Kafka', 'Redis', 'Neo4j', 'REST APIs'],
+    problem:
+      'A professional network is two systems wearing one interface. One of them is a graph — who knows whom, who follows whom, who shares an interest with whom — and the questions worth asking of it are all about paths rather than rows. The other is a firehose: one post has to reach a feed, a notification and an analytics counter, and the person who wrote it should not be waiting while any of that happens.',
+    solution:
+      'I built it as separate services behind one gateway, with the connection model in Neo4j rather than beside the rest of the data, and Kafka between the write side and everything that reacts to a write. The feed reads through Redis, because a feed is read far more often than it is written — which is the condition that makes a cache worth the two places it creates for you to be wrong.',
+    architecture: [
+      'Services split by what they own — profiles and connections, posts, feed, notifications — with an API gateway as the single entrance so a client never needs to know how many there are.',
+      'Connections modelled as a property graph in Neo4j: a second-degree recommendation is a traversal, not a self-join that gets worse with every hop.',
+      'Kafka between the write and the reactions. Posting publishes an event and returns; the feed, notification and analytics consumers each read it on their own schedule.',
+      'Redis on the feed read path, populated on a miss, so the common case is the fast one.',
+      'REST APIs between the client and the gateway; events, not calls, between the services themselves.',
+    ],
+    impact: [
+      { value: 'Neo4j', label: 'connections as a property graph' },
+      { value: '5', label: 'services behind one gateway' },
+      { value: '1 → 3', label: 'one write, three independent consumers' },
+      { value: 'Redis', label: 'read-through cache on the feed path' },
+    ],
+    note: {
+      label: 'What I actually took from it',
+      body:
+        'That the database choice is a consequence of the query, not a preference. I had written second-degree connection logic against a relational schema before and thought the pain was mine. It was the shape: every extra hop is another join, and the query stops reading like the question. Moving the connection model into a graph did not make the system clever — it made the hard query legible, which is a different and more useful thing.',
+    },
+  },
+
+  {
+    id: 'taxonomy-engine',
+    index: '04',
     name: 'Taxonomy Engine',
     concept: 'Hierarchical wealth-product classification, taken from prototype to two production services.',
     year: '2025 — present',
     context: 'Citi · Capital markets',
+    signature: 'tree',
     tech: ['Java', 'Spring Boot', 'Kafka', 'MongoDB', 'OpenShift', 'AppDynamics', 'Angular'],
     problem:
       'Wealth Product Taxonomy classification needed to run continuously over a moving catalogue of financial products, with every classification traceable to the rule that produced it. The shape of the problem was clear from a prototype I built in Python and FastAPI; the shape of the production system was not the same shape.',

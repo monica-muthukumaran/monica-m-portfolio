@@ -1,8 +1,11 @@
-import { useRef, useState } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { motion, useScroll, useMotionValueEvent } from 'motion/react'
+import { ArrowUpRight } from 'lucide-react'
 import { projects, type Project } from '../../data/projects'
 import { diagrams } from '../../data/diagrams'
-import { ArchitectureDiagram } from '../visuals/ArchitectureDiagram'
+import { Signature } from '../visuals/Signature'
+import { PaymentStudy } from '../systems/PaymentStudy'
+import { SocialStudy } from '../systems/SocialStudy'
 import { Eyebrow } from '../primitives/Eyebrow'
 import { MaskText } from '../primitives/MaskText'
 import { Reveal } from '../primitives/Reveal'
@@ -44,6 +47,20 @@ function StepBody({ project, step }: { project: Project; step: number }) {
           <p>{project.note.body}</p>
         </div>
       )}
+      {/* Last thing in the last step: the visitor has read the argument and
+          now wants the code. */}
+      {project.links && (
+        <ul className="project__links">
+          {project.links.map(({ label, href }) => (
+            <li key={href}>
+              <a href={href} target="_blank" rel="noreferrer">
+                {label}
+                <ArrowUpRight size={12} strokeWidth={1.75} aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
@@ -73,7 +90,8 @@ function ProjectVisual({ project, stage, complete }: { project: Project; stage: 
   }
 
   return (
-    <ArchitectureDiagram
+    <Signature
+      kind={project.signature ?? 'bands'}
       bands={diagrams[project.id] ?? []}
       stage={stage}
       complete={complete}
@@ -109,7 +127,17 @@ function ProjectScene({ project, order }: { project: Project; order: number }) {
         <span className="project__context">{project.context}</span>
         <span className="project__year num">{project.year}</span>
       </div>
+      {project.status && <p className="project__status">{project.status}</p>}
       <MaskText lines={[project.name]} as="h3" className="project__name t-h2" />
+      {/* Where the work was done, when that is a programme. Set as a quiet
+          mono tag, never styled like the award — a cohort is context, and
+          saying so plainly is what keeps the rest of the page believable. */}
+      {project.credential && (
+        <p className="project__credential">
+          <span className="project__credential-issuer">{project.credential.label}</span>
+          <span className="project__credential-detail">{project.credential.detail}</span>
+        </p>
+      )}
       <p className="project__concept">{project.concept}</p>
       {project.award && (
         <p className="project__award">
@@ -127,6 +155,18 @@ function ProjectScene({ project, order }: { project: Project; order: number }) {
           <li key={t}>{t}</li>
         ))}
       </ul>
+      {/* Kept visibly separate from what is in the repository. Merging the two
+          rows would be the single most misleading thing this page could do. */}
+      {project.techDesigned && (
+        <ul className="project__tech project__tech--designed">
+          <li className="project__tech-label" aria-hidden="true">
+            Designed around
+          </li>
+          {project.techDesigned.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
+      )}
     </header>
   )
 
@@ -235,7 +275,14 @@ export function Work() {
 
       <div className="work__scenes">
         {projects.map((p, i) => (
-          <ProjectScene key={p.id} project={p} order={i + 1} />
+          <Fragment key={p.id}>
+            <ProjectScene project={p} order={i + 1} />
+            {/* The long-form study sits directly under the scene it belongs to,
+                so the visitor stays inside one system rather than meeting all
+                four and then being handed a pile of appendices. */}
+            {p.study === 'payment' && <PaymentStudy />}
+            {p.study === 'social' && <SocialStudy />}
+          </Fragment>
         ))}
       </div>
     </section>

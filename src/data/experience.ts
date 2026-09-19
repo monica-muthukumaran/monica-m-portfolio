@@ -36,6 +36,10 @@ export const experience: readonly Role[] = [
     systems: [
       { name: 'Taxonomy Engine', detail: 'Two Spring Boot services, Kafka-streamed, MongoDB-backed' },
       { name: 'Security Onboarding', detail: 'Palantir Foundry application, owned solo end to end' },
+      {
+        name: 'Centralized Mongo Pipeline Runner',
+        detail: 'One repository for MongoDB aggregation pipelines, run from a single place rather than per service',
+      },
       { name: 'Git Diff Tracker', detail: 'Release-over-release configuration and code change surfacing' },
     ],
     stack: ['Java', 'Spring Boot', 'Kafka', 'MongoDB', 'Python', 'FastAPI', 'Angular', 'OpenShift', 'Palantir Foundry'],

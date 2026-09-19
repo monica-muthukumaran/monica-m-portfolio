@@ -1,0 +1,296 @@
+/* ============================================================
+   Project signatures — three drawing forms sharing one palette.
+   The ink, the hairline weight and the mono labels are constant; only
+   the geometry changes between projects.
+   ============================================================ */
+
+.sig {
+  margin: 0;
+  width: 100%;
+}
+
+.sig__svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Shared type ------------------------------------------------ */
+
+.sig__label {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  fill: var(--bone-100);
+}
+
+.sig__sub,
+.sig__tag,
+.sig__depth,
+.sig__rel,
+.sig__node-label {
+  font-family: var(--font-mono);
+}
+
+.sig__sub {
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  fill: var(--graphite);
+}
+
+.sig__tag,
+.sig__depth {
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  fill: var(--slate);
+}
+
+/* Shared reveal ---------------------------------------------- */
+
+.sig__lane,
+.sig__row,
+.sig__edge,
+.sig__node {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+
+.sig__lane[data-visible='true'],
+.sig__row[data-visible='true'],
+.sig__edge[data-visible='true'],
+.sig__node[data-visible='true'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   Lanes
+   ============================================================ */
+
+.sig__spine,
+.sig__stub {
+  stroke: var(--ink-500);
+  stroke-width: 1;
+}
+
+.sig__lane.is-accent .sig__stub {
+  stroke: color-mix(in srgb, var(--vermilion) 68%, transparent);
+}
+
+.sig__stop {
+  fill: var(--ink-900);
+  stroke: var(--ink-500);
+  stroke-width: 1;
+}
+
+.sig__stop.is-accent {
+  fill: var(--vermilion);
+  stroke: var(--vermilion);
+}
+
+.sig__plate {
+  fill: color-mix(in srgb, var(--bone-100) 3%, transparent);
+  stroke: var(--ink-500);
+  stroke-width: 1;
+}
+
+.sig__lane.is-accent .sig__plate {
+  stroke: var(--vermilion);
+  fill: color-mix(in srgb, var(--vermilion) 9%, transparent);
+}
+
+.sig__divider {
+  stroke: var(--ink-500);
+  stroke-width: 1;
+}
+
+.sig__lane.is-accent .sig__divider {
+  stroke: color-mix(in srgb, var(--vermilion) 40%, transparent);
+}
+
+.sig__lane.is-accent .sig__label {
+  fill: #fff;
+}
+
+.sig__lane.is-accent .sig__sub {
+  fill: color-mix(in srgb, var(--vermilion) 62%, var(--bone-100));
+}
+
+/* The transaction. It only moves while the figure is near the viewport —
+   an infinite keyframe on an off-screen element still costs compositor
+   time and stops the page ever reaching an idle frame. */
+.sig__token rect {
+  fill: var(--vermilion);
+}
+
+.sig__token {
+  opacity: 0;
+}
+
+.sig--lanes.is-onscreen .sig__token {
+  animation: sig-travel 4.8s var(--ease-inout) infinite;
+}
+
+@keyframes sig-travel {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  8%,
+  86% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(var(--travel));
+  }
+}
+
+/* ============================================================
+   Graph
+   ============================================================ */
+
+.sig__edge line {
+  stroke: var(--ink-500);
+  stroke-width: 1;
+}
+
+.sig__rel {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  fill: var(--slate);
+}
+
+.sig__node circle {
+  fill: var(--ink-800);
+  stroke: var(--ink-500);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.sig__node.is-root circle {
+  fill: color-mix(in srgb, var(--vermilion) 14%, var(--ink-800));
+  stroke: var(--vermilion);
+}
+
+.sig__node.is-topic circle {
+  stroke: var(--amber);
+  stroke-dasharray: 3 3;
+}
+
+.sig__node.is-content circle {
+  fill: var(--ink-700);
+}
+
+.sig__node-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  fill: var(--graphite);
+}
+
+.sig__node.is-root .sig__node-label {
+  fill: var(--bone-100);
+}
+
+/* A slow breath on the root node, so the graph reads as live rather than
+   printed. Parked off-screen like the lane token. */
+.sig--graph.is-onscreen .sig__node.is-root circle {
+  animation: sig-pulse 3.6s var(--ease-inout) infinite;
+}
+
+@keyframes sig-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.66;
+  }
+}
+
+/* ============================================================
+   Tree
+   ============================================================ */
+
+.sig__branch {
+  fill: color-mix(in srgb, var(--bone-100) 3%, transparent);
+  stroke: var(--ink-500);
+  stroke-width: 1;
+}
+
+.sig__row.is-accent .sig__branch {
+  stroke: var(--vermilion);
+  fill: color-mix(in srgb, var(--vermilion) 9%, transparent);
+}
+
+.sig__row.is-accent .sig__label {
+  fill: #fff;
+}
+
+.sig__row.is-accent .sig__sub {
+  fill: color-mix(in srgb, var(--vermilion) 62%, var(--bone-100));
+}
+
+.sig__elbow {
+  stroke: var(--ink-500);
+  stroke-width: 1;
+}
+
+.sig__row.is-accent .sig__elbow {
+  stroke: color-mix(in srgb, var(--vermilion) 60%, transparent);
+}
+
+/* ============================================================
+   Light ground
+   ============================================================ */
+
+[data-ground='bone'] .sig__plate,
+[data-ground='bone'] .sig__branch {
+  fill: color-mix(in srgb, var(--ink-900) 2%, transparent);
+  stroke: var(--bone-300);
+}
+
+[data-ground='bone'] .sig__label {
+  fill: var(--ink-900);
+}
+
+[data-ground='bone'] .sig__spine,
+[data-ground='bone'] .sig__stub,
+[data-ground='bone'] .sig__divider,
+[data-ground='bone'] .sig__elbow,
+[data-ground='bone'] .sig__edge line {
+  stroke: var(--bone-300);
+}
+
+[data-ground='bone'] .sig__node circle {
+  fill: var(--bone-200);
+  stroke: var(--bone-300);
+}
+
+/* ============================================================
+   Reduced motion — the drawings stay, the loops stop.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .sig__lane,
+  .sig__row,
+  .sig__edge,
+  .sig__node {
+    transition-duration: 200ms;
+    transform: none;
+  }
+
+  .sig--lanes.is-onscreen .sig__token,
+  .sig--graph.is-onscreen .sig__node.is-root circle {
+    animation: none;
+  }
+
+  .sig__token {
+    opacity: 1;
+  }
+}

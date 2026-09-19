@@ -1,0 +1,605 @@
+/* ============================================================
+   Distributed Social Platform — case study
+   ============================================================ */
+
+/* ---- 01 Graph growth ---------------------------------------- */
+
+.grow {
+  display: grid;
+  gap: var(--s-6);
+}
+
+@media (min-width: 980px) {
+  .grow {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+}
+
+.grow__field {
+  min-width: 0;
+  padding: var(--s-5);
+  border: 1px solid var(--rule);
+  background:
+    radial-gradient(90% 90% at 30% 40%, color-mix(in srgb, var(--vermilion) 5%, transparent) 0%, transparent 60%),
+    var(--ink-800);
+}
+
+.grow__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.grow__steps li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-3);
+  align-items: start;
+  opacity: 0.32;
+  transition: opacity 420ms var(--ease-out);
+}
+
+.grow__steps li.is-active,
+.grow__steps li.is-past {
+  opacity: 1;
+}
+
+.grow__steps li.is-past {
+  opacity: 0.55;
+}
+
+.grow__steps-mark {
+  width: 8px;
+  height: 8px;
+  margin-top: 0.5em;
+  border: 1px solid var(--ink-500);
+  transition:
+    background-color 420ms var(--ease-out),
+    border-color 420ms var(--ease-out);
+}
+
+.grow__steps li.is-active .grow__steps-mark {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+}
+
+.grow__steps-text {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--bone-100) 78%, transparent);
+  text-wrap: pretty;
+}
+
+/* ---- Domain strip ------------------------------------------- */
+
+.domains {
+  margin-top: var(--s-8);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--rule);
+}
+
+.domains__bridge {
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  color: var(--bone-100);
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+
+.domains__list {
+  display: grid;
+  gap: var(--s-3);
+  margin-top: var(--s-5);
+}
+
+@media (min-width: 640px) {
+  .domains__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .domains__list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* ---- 02 Hops ------------------------------------------------- */
+
+.hops {
+  display: grid;
+  gap: var(--s-7);
+}
+
+@media (min-width: 980px) {
+  .hops {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+}
+
+.hops__chain {
+  display: flex;
+  flex-direction: column;
+}
+
+.hops__hop {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.15rem var(--s-4);
+  padding: var(--s-3) 0 var(--s-4);
+  opacity: 0.3;
+  transition: opacity 360ms var(--ease-out);
+}
+
+.hops__hop.is-lit {
+  opacity: 1;
+}
+
+.hops__hop:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 1.9rem;
+  bottom: -0.1rem;
+  width: 1px;
+  background: var(--ink-500);
+}
+
+.hops__dot {
+  width: 11px;
+  height: 11px;
+  margin-top: 0.35em;
+  border: 1px solid var(--graphite);
+  border-radius: 50%;
+  background: var(--ink-900);
+  transition:
+    background-color 360ms var(--ease-out),
+    border-color 360ms var(--ease-out);
+}
+
+.hops__hop.is-lit .hops__dot {
+  border-color: var(--bone-400);
+}
+
+.hops__hop.is-answer.is-lit .hops__dot {
+  background: var(--vermilion);
+  border-color: var(--vermilion);
+}
+
+.hops__label {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--bone-100);
+}
+
+.hops__hop.is-answer .hops__label {
+  color: var(--vermilion);
+}
+
+.hops__detail {
+  grid-column: 2;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: var(--slate);
+}
+
+.hops__framing {
+  display: block;
+  color: var(--vermilion);
+  margin-bottom: var(--s-3);
+}
+
+.hops__body {
+  font-size: 1rem;
+  line-height: 1.62;
+  color: color-mix(in srgb, var(--bone-100) 76%, transparent);
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+
+.hops__caveat {
+  margin-top: var(--s-4);
+  padding-left: var(--s-4);
+  border-left: 1px solid var(--ink-500);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--slate);
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+.hops__replay {
+  margin-top: var(--s-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+  border-bottom: 1px solid var(--ink-500);
+  padding-bottom: 0.2rem;
+  transition:
+    color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out);
+}
+
+.hops__replay:hover {
+  color: var(--bone-100);
+  border-color: var(--vermilion);
+}
+
+/* ---- 03 Kafka bus -------------------------------------------- */
+
+.bus {
+  display: grid;
+  gap: var(--s-7);
+}
+
+@media (min-width: 980px) {
+  .bus {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+}
+
+.bus__diagram {
+  padding: var(--s-5);
+  border: 1px solid var(--rule);
+  background: var(--ink-800);
+}
+
+.bus__source {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--ink-500);
+}
+
+.bus__source-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--bone-100);
+}
+
+.bus__source-event {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--vermilion);
+}
+
+/* The bus itself, with events moving along it. Parked off-screen. */
+.bus__rail {
+  position: relative;
+  margin: var(--s-5) 0;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--vermilion);
+  background: color-mix(in srgb, var(--vermilion) 8%, transparent);
+  overflow: hidden;
+}
+
+.bus__rail-tag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--vermilion);
+}
+
+.bus__rail-line {
+  position: absolute;
+  inset: auto 0 0.75rem 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--vermilion) 30%, transparent);
+}
+
+.bus__rail-line::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background: var(--vermilion);
+  opacity: 0;
+}
+
+.bus.is-onscreen .bus__rail-line::after {
+  animation: bus-run 2.8s linear infinite;
+}
+
+@keyframes bus-run {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  10%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+.bus__lanes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.bus__lane {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--ink-500);
+  opacity: 0.6;
+  transition:
+    opacity var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out),
+    background-color var(--dur-ui) var(--ease-out);
+}
+
+.bus__lane.is-lit {
+  opacity: 1;
+  border-color: var(--vermilion);
+  background: color-mix(in srgb, var(--vermilion) 8%, transparent);
+}
+
+.bus__lane-link {
+  width: 1.25rem;
+  height: 1px;
+  background: var(--ink-500);
+}
+
+.bus__lane.is-lit .bus__lane-link {
+  background: var(--vermilion);
+}
+
+.bus__lane-label {
+  font-size: 0.875rem;
+  color: var(--bone-100);
+}
+
+.bus__events {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--rule);
+}
+
+.bus__event {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+  padding: var(--s-3) var(--s-2);
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  transition: background-color var(--dur-ui) var(--ease-out);
+}
+
+.bus__event.is-active {
+  background: color-mix(in srgb, var(--vermilion) 7%, transparent);
+}
+
+.bus__event-name {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: var(--bone-100);
+}
+
+.bus__event-route {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--slate);
+}
+
+.bus__event.is-active .bus__event-route {
+  color: var(--vermilion);
+}
+
+.bus__purpose {
+  min-height: 6rem;
+  margin-top: var(--s-5);
+}
+
+.bus__purpose p {
+  margin-top: var(--s-2);
+  font-size: 0.875rem;
+  line-height: 1.62;
+  color: color-mix(in srgb, var(--bone-100) 72%, transparent);
+  text-wrap: pretty;
+}
+
+.bus__purpose--idle {
+  color: var(--slate) !important;
+}
+
+/* ---- 04 Cache ------------------------------------------------ */
+
+.cache__fork {
+  padding: var(--s-5);
+  border: 1px solid var(--rule);
+  background: var(--ink-800);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cache__node {
+  padding: 0.45rem 0.875rem;
+  border: 1px solid var(--ink-500);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  text-align: center;
+}
+
+.cache__node--start {
+  color: var(--bone-100);
+}
+
+.cache__node--gate {
+  border-color: var(--vermilion);
+  color: var(--vermilion);
+}
+
+.cache__link {
+  width: 1px;
+  height: 1.5rem;
+  background: var(--ink-500);
+}
+
+.cache__branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-4);
+  width: 100%;
+  margin-top: var(--s-5);
+}
+
+.cache__branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--ink-500);
+  opacity: 0.34;
+  transition: opacity var(--dur-ui) var(--ease-out);
+}
+
+.cache__branch.is-taken {
+  opacity: 1;
+  border-top-color: var(--vermilion);
+}
+
+.cache__branch-tag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.cache__branch.is-taken .cache__branch-tag {
+  color: var(--vermilion);
+}
+
+.cache__prose {
+  margin-top: var(--s-5);
+  display: grid;
+  gap: var(--s-3);
+  max-width: 60ch;
+}
+
+.cache__note {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--bone-100);
+}
+
+.cache__body {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--bone-100) 66%, transparent);
+  text-wrap: pretty;
+}
+
+/* ---- 05 Service map ------------------------------------------ */
+
+.map {
+  display: grid;
+  gap: var(--s-7);
+}
+
+@media (min-width: 980px) {
+  .map {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+}
+
+.map__grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.map__tier-link {
+  display: block;
+  width: 1px;
+  height: 1.75rem;
+  margin-inline: auto;
+  background: var(--ink-500);
+}
+
+.map__row {
+  display: grid;
+  gap: var(--s-3);
+}
+
+@media (min-width: 560px) {
+  .map__row {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  }
+}
+
+/* A service that the hovered one depends on. Not the same treatment as the
+   hovered node itself — a dependency is a different fact from a selection. */
+.node--linked {
+  border-color: color-mix(in srgb, var(--vermilion) 55%, transparent);
+  background: color-mix(in srgb, var(--vermilion) 4%, transparent);
+}
+
+.map__side {
+  position: sticky;
+  top: calc(var(--nav-h) + var(--s-5));
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+@media (max-width: 979px) {
+  .map__side {
+    position: static;
+  }
+}
+
+.map__side .legend {
+  grid-template-columns: 1fr;
+}
+
+/* ---- Reduced motion ------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .bus.is-onscreen .bus__rail-line::after {
+    animation: none;
+    opacity: 1;
+  }
+
+  .hops__hop,
+  .grow__steps li,
+  .cache__branch,
+  .bus__lane {
+    opacity: 1;
+  }
+}

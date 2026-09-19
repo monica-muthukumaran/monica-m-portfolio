@@ -45,9 +45,10 @@ export function EnvironmentProvider({ children }: { children: ReactNode }) {
     '(pointer: fine) and (min-width: 900px)',
     query('(pointer: fine) and (min-width: 900px)'),
   )
-  // A pinned scene gets exactly one screen, and the tallest column is the one
-  // carrying the award badge plus a six-line result. Measured, that overflows
-  // at 802px, so the cut is 840 — re-measure this if the header grows again.
+  // A pinned scene gets exactly one screen, and the tallest column is now the
+  // payment gateway: status line, cohort tag, two tech rows and a six-line
+  // architecture list. Measured at 802px with the short-viewport compression
+  // applied, so the cut stays at 840 — re-measure if the header grows again.
   // Below it the flat, scrollable telling is the honest layout, not a clipped
   // one.
   const roomy = useMediaQuery(
